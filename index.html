@@ -25,6 +25,8 @@
   <script>
     window.$docsify = {
       name: "123",
+      nameLink: '/zh-cn/',
+      basePath: '/zh-cn/',
       logo: "./static/avatar.png",
       repo: "https://github.com/Guoaking/know",
       loadNavbar: true,
@@ -32,6 +34,8 @@
       subMaxLevel: 2,
       mergeNavbar: true,
       coverpage: true,
+      notFoundPage: true,
+
       timeUpdater: {
         text: "<div align='right' width='200px' style='color:gray;font-size:16px'>Posted @ {docsify-updated}</div>",
         formatUpdated: "{YYYY}/{MM}/{DD} {HH}:{mm}",
@@ -91,7 +95,7 @@
       // To avoid search index collision
       // between multiple websites under the same domain
       // namespace: '/zh-cn/',
-
+      namespace: 'website-1',
       // Use different indexes for path prefixes (namespaces).
       // NOTE: Only works in 'auto' mode.
       //
@@ -149,6 +153,10 @@
       // facebook-like distraction free mode
       distractionFreeMode: false,
     });
+
+    if (typeof navigator.serviceWorker !== 'undefined') {
+     navigator.serviceWorker.register('sw.js')
+    }
   </script>
 </body>
 
