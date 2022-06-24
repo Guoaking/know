@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="layui-v2.5.7/layui/css/layui.css">
+
+    <title>layui</title>
+</head>
+<body>
+    
+
+
+    <button type="button" class="layui-btn">一个标准的按钮</button>
+    <a href="http://www.layui.com" class="layui-btn">一个可跳转的按钮</a>
+
+
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li class="layui-this">网站设置</li>
+          <li>用户管理</li>
+
+        </ul>
+        <div class="layui-tab-content">
+          <div class="layui-tab-item layui-show">内容1</div>
+          <div class="layui-tab-item">内容2</div>
+
+        </div>
+      </div>
+
+
+      <div id="test1"></div>
+
+    <script src="layui-v2.5.7/layui/layui.all.js"></script>
+    <script src="vue.js"></script>
+    <script>
+        //一般直接写在一个js文件中
+
+
+        layui.use('element', function(){
+            var element = layui.element;
+
+        });
+
+
+        layui.use('tree', function(){
+    var tree = layui.tree;
+   
+    //渲染
+    var inst1 = tree.render({
+      elem: '#test1'  //绑定元素
+      ,data: [{
+        title: '江西' //一级菜单
+        ,children: [{
+          title: '南昌' //二级菜单
+          ,children: [{
+            title: '高新区' //三级菜单
+            //…… //以此类推，可无限层级
+          }]
+        }]
+      },{
+        title: '陕西' //一级菜单
+        ,children: [{
+          title: '西安' //二级菜单
+        }]
+      }]
+    });
+  });
+        </script> 
+</body>
+</html>

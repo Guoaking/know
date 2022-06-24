@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        .videoinfo .top {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .videoinfo .main {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .videoinfo .main>div {
+            max-width: 1200px;
+            min-width: 900px;
+            justify-content: center;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 4px;
+            min-height: 300px;
+        }
+
+        .videoinfo .top>div {
+            display: flex;
+            border: 1px solid #ccc;
+            justify-content: center;
+            padding: 4px;
+            min-width: 900px;
+        }
+
+        .videoinfo .top>div img {
+            width: 640px;
+            height: 300px;
+        }
+
+        .videoinfo .top .text p {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .videoinfo .top .text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .videoinfo .top .text .textchild {
+            flex: 10;
+        }
+
+
+        .videoinfo .top .btn {
+            flex: 10;
+        }
+
+        .videoinfo .tree{
+            border:unset;
+        }
+
+        .videoinfo .tree li span{
+            border:unset;
+        }
+        .videoinfo .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span{
+            border:unset !important;
+            background: unset !important;
+        }
+
+        .videoinfo .tree li::before, .tree li::after{
+            content:unset !important;
+        }
+        .videoinfo ul{
+            padding-inline-start: 10px !important;
+        }
+        .videoinfo .icon-leaf .list-item{
+            background-color: #E5F3FD;
+            margin-bottom: 4px;
+        }
+
+
+        .videoinfo #profile > div > ul > li > span{
+            width: 100%;
+    background: #ccc;
+    display: block;
+    line-height: 30px;
+    border-radius: 0px;
+    margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+
+        <div class="top">
+            <div>
+                <img :src="imgurl" alt="视频">
+
+                <div class="text">
+                    <div class="textchild">
+                        <p>{{title}}</p>
+                        <span>{{content}}</span>
+                    </div>
+                    <div class="btn">
+
+                        <button type="button" class="btn btn-success" @click="goPlay">立即播放</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="main">
+            <div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                            data-toggle="tab">介绍</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                            data-toggle="tab">章节</a></li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">我是介绍</div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+
+                        <div class="tree">
+                            <child-component :list = 'chapter'></child-component>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        
+
+    </div>
+
+
+
+
+
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="httpVueLoader.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+
+    <script>
+
+
+        
+        var child = {
+            template:"<ul><li class='list-item' v-for='(item, index) in list' :key='index'><span> <i class='icon-folder-open'></i>{{item.n}}</span> <ul v-if='item.children' class='icon-leaf'><list :list='item.children'></list></ul> </li></ul>",
+            data:function(){
+                return {
+                    chapter:[]
+                }
+            },
+            props: {list: Array },
+            methods:{
+                add2:function(){
+
+                }
+            },
+            name: "List",
+        }
+
+        
+
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    content: '介绍',
+                    title: '数学',
+                    info: [{
+                        map: {
+                            content: '介绍',
+                            title: '数学',
+                            theorytype: '',
+                            teachername: '',
+                            introduction: '',
+                            handoutskeyword: '',
+                            detailintroduction: '',
+                            imgpath: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3504501744,3249216864&fm=26&gp=0.jpg',
+                        },
+                        chapter: [{
+                        }]
+                    }],
+                    chapter: [{
+                            "sid": "1",
+                            "sectionname": "添加的第一章",
+                            "knobblemsg": null,
+                            "timelength": "123456",
+                            "pid": "0",
+                            "handoutssid": "1",
+                            "cd": [],
+                            "n": "添加的第一章",
+                            "parent_id": null,
+                            "id": "1",
+                            "open": true,
+                            "children": [{
+                                    "sid": "2",
+                                    "sectionname": "添加的第一小节",
+                                    "knobblemsg": "第一小节内容",
+                                    "timelength": "234567",
+                                    "pid": "1",
+                                    "handoutssid": "1",
+                                    "cd": [],
+                                    "n": "添加的第一小节",
+                                    "parent_id": "第一小节内容",
+                                    "id": "2",
+                                    "open": true,
+                                    "children": []
+                                },
+                                {
+                                    "sid": "3",
+                                    "sectionname": "添加的第一章第二小节",
+                                    "knobblemsg": "第二小节内容",
+                                    "timelength": "12345",
+                                    "pid": "1",
+                                    "handoutssid": "1",
+                                    "cd": [],
+                                    "n": "添加的第一章第二小节",
+                                    "parent_id": "第二小节内容",
+                                    "id": "3",
+                                    "open": true,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "sid": "4",
+                            "sectionname": "第二章",
+                            "knobblemsg": null,
+                            "timelength": "1234567",
+                            "pid": "0",
+                            "handoutssid": "1",
+                            "cd": [],
+                            "n": "第二章",
+                            "parent_id": null,
+                            "id": "4",
+                            "open": true,
+                            "children": [{
+                                    "sid": "5",
+                                    "sectionname": "第二章第一小节",
+                                    "knobblemsg": "第二章第一小节内容",
+                                    "timelength": "2345",
+                                    "pid": "4",
+                                    "handoutssid": "1",
+                                    "cd": [],
+                                    "n": "第二章第一小节",
+                                    "parent_id": "第二章第一小节内容",
+                                    "id": "5",
+                                    "open": true,
+                                    "children": []
+                                },
+                                {
+                                    "sid": "6",
+                                    "sectionname": "第二章第二小节",
+                                    "knobblemsg": "第二章第二小节内容",
+                                    "timelength": "34567",
+                                    "pid": "4",
+                                    "handoutssid": "1",
+                                    "cd": [],
+                                    "n": "第二章第二小节",
+                                    "parent_id": "第二章第二小节内容",
+                                    "id": "6",
+                                    "open": true,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ],
+                    imgurl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3504501744,3249216864&fm=26&gp=0.jpg'
+                }
+            },
+            created: function () {
+                // var self = this;
+
+                // var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+
+                // var theRequest = new Object();
+                // if (url.indexOf("?") != -1) {
+                //     var str = url.substr(1);
+                //     strs = str.split("&");
+                //     for (var i = 0; i < strs.length; i++) {
+                //         theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                //     }
+                // }
+
+                // console.log(JSON.stringify(theRequest) + ">>>>>>>>>>>>>....")
+
+                // $.ajax({
+                //     url: ctx + "/video/NoteController/getNoteList.vot",
+                //     type: 'POST',
+                //     data: {
+                //         'format': 'json',
+                //         'page': 1,
+                //     },
+                //     dataType: "json",
+                //     timeout: '1000',
+                // }).then(function (res) {
+                //     console.log(res.treedatas)
+                //     self.msg = res.treedatas;
+                //     console.log(self.msg)
+                // }).fail(function () {
+                //     console.log('失败');
+                // });
+
+
+
+            },
+            methods: {
+                goPlay() {
+                    window.location.href = "/index2.html";
+                },
+
+
+
+            },
+            components: {
+                // 'multisearch': httpVueLoader('compoent/test.vue'),
+                "child-component":child
+            }
+        });
+
+
+
+
+        $('#nav-tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+
+
+
+        $(function () {
+            $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+            $('.tree li.parent_li > span').on('click', function (e) {
+
+                var children = $(this).parent('li.parent_li').find(' > ul > ul > li');
+                console.log(children)
+                if (children.is(":visible")) {
+                    children.hide('fast');
+                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign')
+                        .removeClass('icon-minus-sign');
+                } else {
+                    children.show('fast');
+                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass(
+                        'icon-minus-sign').removeClass('icon-plus-sign');
+                }
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+
+</html>

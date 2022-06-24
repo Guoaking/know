@@ -1,0 +1,60 @@
+//公司id
+@overContent-type = multipart/form-data
+@Content-Type= application/json
+@createTime = {{$datetime iso8601}}
+@localhost = localhost:8080
+@localhost2 = http://localhost:8080
+
+
+
+
+//=============================jpa本机测试==============================
+@jpafindall = /api/bs
+
+### get请求所有
+GET {{localhost2}}{{jpafindall}}
+content-type: application/json
+
+### get查看提供的接口
+GET {{localhost2}}{{jpafindall}}/search
+content-type: application/json
+
+### 
+get http://localhost:8080/bs/search/findByName?name=西
+
+### post新增
+POST HTTP:{{localhost}}{{jpafindall}}
+content-type: application/json
+
+{
+    "name":"朝花夕拾",
+    "author":"鲁迅"
+}
+
+### put修改
+PUT {{localhost2}}{{jpafindall}}/7
+Content-Type: {{Content-Type}}
+
+{
+    "name":"朝花夕拾",
+    "author":"鲁迅1"
+}
+
+
+### delete 删除
+DELETE  {{localhost2}}{{jpafindall}}/7
+
+
+PUT {{localhost2}}{{jpafindall}}/7
+Content-Type: {{Content-Type}}
+
+{
+    "name":"朝花夕拾",
+    "author":"鲁迅1"
+}
+
+
+
+
+
+

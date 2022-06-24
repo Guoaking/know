@@ -1,124 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Document</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="Description" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
-    />
-    <link
-      rel="stylesheet"
-      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
-    />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
-  </head>
-  <body>
-    <div id="app">加载中</div>
-    <script>
-      window.$docsify = {
-        name: "123",
-        repo: "https://github.com/Guoaking/know",
-        loadNavbar: true,
-        loadSidebar: true,
-        subMaxLevel: 2,
-        mergeNavbar: true,
-        formatUpdated: "{MM}/{DD} {HH}:{mm}",
-        search: [
-          "/", // => /README.md
-          "/guide", // => /guide.md
-          "/get-started", // => /get-started.md
-          "/zh-cn/", // => /zh-cn/README.md
-        ],
-        search: {
-          maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-          paths: [], // or 'auto'
-          placeholder: "Type to search",
 
-          // 支持本地化
-          placeholder: {
-            "/zh-cn/": "搜索",
-            "/": "Type to search",
-          },
+<head>
+  <meta charset="UTF-8" />
+  <title>123</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
+  <link rel="stylesheet" href="//unpkg.com/docsify-gifcontrol/dist/docsify-gifcontrol.css" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
+  <link rel="shortcut icon" type="image/x-icon"  href="./static/favicon.png"></link>
+</head>
 
-          noData: "No Results!",
-
-          // 支持本地化
-          noData: {
-            "/zh-cn/": "找不到结果",
-            "/": "No Results",
-          },
-
-          // 搜索标题的最大层级, 1 - 6
-          depth: 2,
-
-          hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
-
-          // 避免搜索索引冲突
-          // 同一域下的多个网站之间
-          namespace: "website-1",
-
-          // 使用不同的索引作为路径前缀（namespaces）
-          // 注意：仅适用于 paths: 'auto' 模式
-          //
-          // 初始化索引时，我们从侧边栏查找第一个路径
-          // 如果它与列表中的前缀匹配，我们将切换到相应的索引
-          pathNamespaces: ["/zh-cn", "/ru-ru", "/ru-ru/v1"],
-
-          // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
-          // 匹配到的字符串将被用来识别索引
-          pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/,
+<body>
+  <div id="app">加载中</div>
+  <script>
+    window.$docsify = {
+      name: "123",
+      logo: "./static/avatar.png",
+      repo: "https://github.com/Guoaking/know",
+      loadNavbar: true,
+      loadSidebar: true,
+      subMaxLevel: 2,
+      mergeNavbar: true,
+      coverpage: true,
+      timeUpdater: {
+        text: "<div align='right' width='200px' style='color:gray;font-size:16px'>Posted @ {docsify-updated}</div>",
+        formatUpdated: "{YYYY}/{MM}/{DD} {HH}:{mm}",
+        whereToPlace: "bottom", // "top" or "bottom", default to "bottom"
+      },
+      darkMode: {
+        dark: {
+          background: "#1c2022",
+          toggleBtnBg: "#34495e",
+          textColor: "#b4b4b4",
         },
-        buttonText: "Copy to clipboard",
-        errorText: "Error",
-        successText: "Copied",
-        count: {
-          countable: true,
-          position: "top",
-          margin: "10px",
-          float: "right",
-          fontsize: "0.9em",
-          color: "rgb(90,90,90)",
-          language: "chinese",
-          localization: {
-            words: "",
-            minute: "",
-          },
-          isExpected: true,
+        light: {
+          background: "white",
+          toggleBtnBg: "var(--theme-color)",
+          textColor: "var(--theme-color)",
         },
-      };
-    </script>
-    <!-- Docsify v4 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-    <!-- 搜索 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-    <!-- emoji -->
-    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
-    <!-- code 复制 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-    <!-- 分页 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-    <!-- 字数统计 -->
-    <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
-    <!-- 代码高亮 -->
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+      },
+      progress: {
+        position: "top",
+        color: "var(--theme-color,#42b983)",
+        height: "3px",
+      },
+      copyCode: {
+        buttonText: "复制",
+        errorText: "错误!",
+        successText: "复制成功!",
+      },
+      count: {
+        countable: true,
+        position: "top",
+        margin: "10px",
+        float: "top",
+        fontsize: "0.9em",
+        color: "rgb(90,90,90)",
+        language: "chinese",
+        localization: {
+          words: "",
+          minute: "",
+        },
+        isExpected: true,
+      },
+
+      search: {
+      maxAge: 86400000, // Expiration time, the default one day
+      paths: [], // or 'auto'
+      placeholder: '搜索',
 
 
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-<script>
-  const gitalk = new Gitalk({
-    clientID: '49b62908f202a2099797',
-    clientSecret: '675689071ac6b6ecfc848a45ad7c88f0783bf98a',
-    repo: 'know',
-    owner: 'Guoaking',
-    admin: ['Guoaking'],
-    // facebook-like distraction free mode
-    distractionFreeMode: false
-  })
-</script>
-  </body>
+      noData: '找不到结果',
+
+
+      // Headline depth, 1 - 6
+      depth: 6,
+
+      hideOtherSidebarContent: false, // whether or not to hide other sidebar content
+
+      // To avoid search index collision
+      // between multiple websites under the same domain
+      // namespace: '/zh-cn/',
+
+      // Use different indexes for path prefixes (namespaces).
+      // NOTE: Only works in 'auto' mode.
+      //
+      // When initialiazing an index, we look for the first path from the sidebar.
+      // If it matches the prefix from the list, we switch to the corresponding index.
+      pathNamespaces: ['/zh-cn', '/ru-ru', '/ru-ru/v1'],
+
+      // You can provide a regexp to match prefixes. In this case,
+      // the matching substring will be used to identify the index
+      pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+    }
+    };
+  </script>
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <!-- 搜索 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- emoji -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <!-- code 复制 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <!-- 分页 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- 字数统计 -->
+  <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+  <!-- 代码高亮 -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <!-- 更新时间 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-updated/src/time-updater.min.js"></script>
+
+  <!-- pdf -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+  <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+
+  <!-- gif -->
+  <script src="//unpkg.com/docsify-gifcontrol/dist/docsify-gifcontrol.js"></script>
+
+  <!-- 阅读进度 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-progress@latest/dist/progress.min.js"></script>
+
+  <!-- 夜间模式 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: "49b62908f202a2099797",
+      clientSecret: "675689071ac6b6ecfc848a45ad7c88f0783bf98a",
+      repo: "know",
+      owner: "Guoaking",
+      admin: ["Guoaking"],
+      // facebook-like distraction free mode
+      distractionFreeMode: false,
+    });
+  </script>
+</body>
+
 </html>

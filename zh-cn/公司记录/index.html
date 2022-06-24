@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入样式 -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
+    <!-- <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css"> -->
+
+    <title>课程信息</title>
+
+    <style>
+        .main_top,
+        .top {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .main_buttom {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .el-tabs {
+            width: 500px;
+        }
+
+        .top {
+            min-width: 900px;
+            max-width: 1200px;
+            border: 1px solid #ccc;
+        }
+
+        .videoimage {
+            width: 620px;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <el-container>
+            <el-main>
+                <div class="main_top">
+                    <div class="top">
+                        <div>
+
+                            <el-image class="videoimage" :src="url" :fit="fit"></el-image>
+                        </div>
+
+                        <div>
+                            <div>
+                                <h1>讲义名称</h1>
+                            </div>
+                            <div>
+                                <span>Lorem ipsum do
+                                </span>
+                            </div>
+                            <el-button @click="forwordClick" type="primary">立即播放</el-button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main_buttom">
+                    <div class="top">
+                        <template>
+                            <el-tabs v-model="activeName" @tab-click="handleClick">
+                                <el-tab-pane label="介绍" name="first">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum
+                                    laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
+                                    sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient
+                                    montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate,
+                                    felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.
+                                </el-tab-pane>
+                                <el-tab-pane label="目录" name="second">
+                                    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                                </el-tab-pane>
+                            </el-tabs>
+                        </template>
+                    </div>
+
+                </div>
+                <el-dialog :visible.sync="visible" title="Hello world">
+                    <p>Try Element</p>
+                </el-dialog>
+
+            </el-main>
+
+
+        </el-container>
+
+
+
+    </div>
+
+
+
+</body>
+<!-- import Vue before Element -->
+<!-- <script src="vue.js"></script> -->
+<!-- import JavaScript -->
+<!-- <script src="element-ui/lib/index.js"></script> -->
+<!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+ <!-- <script src="index.js"></script> -->
+ <script src="myquill.js"></script>
+<script>
+
+window.myquill = function(){
+    alert("myquill")
+}
+
+
+
+</script>
+
+</html>

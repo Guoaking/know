@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img id ='imgs' />
+</body>
+<script>
+  function  base64ImgtoFile(dataurl, filename = 'file') {
+  let arr = dataurl.split(',')
+  let mime = arr[0].match(/:(.*?);/)[1]
+  let suffix = mime.split('/')[1]
+  let bstr = atob(arr[1])
+  let n = bstr.length
+  let u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new File([u8arr], `${filename}.${suffix}`, {
+    type: mime
+  })
+}
+
+// base64编码的图片
+var base64Img = 'data:image/png;base64,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';
+//转换图片文件
+var imgFile = this.base64ImgtoFile(base64Img); 
+console.log("🚀 ~ file: base64.html ~ line 34 ~ imgFile", imgFile)
+var img = document.querySelector("#imgs");
+console.log("🚀 ~ file: base64.html ~ line 35 ~ img", img)
+img.src =  imgFile
+</script>
+</body>
+
+</html>

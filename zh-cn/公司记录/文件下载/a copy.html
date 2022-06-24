@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件下载</title>
+
+    <link href="../css/init_project.css" rel="stylesheet" />
+</head>
+
+<body>
+
+
+
+
+
+    <script>
+        function addNum(thisobj) {
+            alertNumber(thisobj)
+        }
+
+        function updateNum(thisobj) {
+            alertNumber(thisobj)
+        }
+
+        function alertNumber(obj) {
+            var thisdialog = $('<form>\
+                <div class="condi_container" style="hidden:true;height:0px;">\
+                    <span class="cd_name" ></span>\
+                    <span class="cd_val" style="width:250px;">\
+                    </span>\
+                </div>\
+                <div class="condi_container">\
+                    <span class="cd_name">项目编号：</span>\
+                    <span class="cd_val" style="width:250px;">\
+                        <input class="itemnum" name="itemnum" value="'+ (obj.item_number == null ? "" : obj.item_number) + '" required2="true" />\
+                    </span>\
+                </div>\
+            </form>').initWidgets().dialog({
+                title: "添加项目编号",
+                width: 480,
+                height: 130,
+                modal: true,
+                buttons: {
+                    "确定": function () {
+                        debugger
+                        if (!thisdialog.validate())
+                            return;
+                        var l = $("[name=itemnum]").val();
+                        if (l == "") {
+                            return;
+                        }
+
+                        $.getJSON(ctx + "/fjh/basicinfo/processproject/newprojectprocess/ProjectLibBascInfoProcessController/addItemNumber.vot?sid=" + obj.sid + "&&num=" + encodeURI(encodeURI(l)), function (data) {
+                            alert(data.msg)
+                            if (data.flag == 1) {
+                                thisdialog.dialog("destroy");
+
+                            }
+                        });
+                    }, "取消": function () {
+                        debugger
+                        thisdialog.dialog("destroy");
+
+                    }
+                }, open: function () {
+                    /* setdate("#income_time_div"); */
+                }, close: function () {
+                    debugger
+                    thisdialog.dialog("destroy");
+
+                }
+            });
+        }
+
+        function selectHeader() {
+            $.selectUsers({
+                issingle: true,
+                callback: function (users) {
+                    $(users).each(function () {
+                        $("#projectbasicinfo [name=headsid]").val(this.sid);
+                        $("#projectbasicinfo [name=headuser]").val(this.name);
+                        $("#projectbasicinfo [name=headname]").val(this.username);
+                    })
+                }
+            });
+        }
+        function addMember22() {
+            $('<tr>\
+                <td align="center"><input name="member" required="true" class="member" style="width:150px;"></td>\
+                <td align="center"><span class="ui-icon ui-icon-trash"></span>\
+                </tr>').appendTo("#memberlist").initWidgets().setCurrentState("create").find(".member").end().find(".ui-icon-trash").click(function () {
+                deleteLine(this);
+            }).end();
+        }
+
+
+        function addMember() {
+            $.selectUsers({
+                issingle: false,
+                callback: function (users) {
+                    $(users).each(function () {
+                        $("#projectbasicinfo [name=member]").val(this.name);
+                    })
+                }
+            });
+        }
+
+
+        function addAuditCreate() {
+            $.selectUserByRolesid({
+                rolesid: "013",
+                includeSubunits: false,
+                callback: function (users) {
+                    $(users).each(function () {
+                        $("#projectbasicinfo [name=var_candidatecreator]").val(this.username);
+                        $("#projectbasicinfo [name=candidatecreatoruser]").val(this.name);
+                        $("#projectbasicinfo [name=candidatecreatorusersid]").val(this.sid);
+                    })
+                }
+            });
+        }
+
+
+        function addParenters() {
+            $('<tr>\
+                <td align="center"><input name="partners" required="true" class="partners" style="width:150px;margin:10px 0px"></td>\
+                <td align="center"><span class="ui-icon ui-icon-trash"></span>\
+                </tr>').appendTo("#partnerslist").initWidgets().setCurrentState("create").find(".partners").end().find(".ui-icon-trash").click(function () {
+                deleteLine(this);
+            }).end();
+        }
+
+        function deleteLine(thisObj) {
+            if (confirm("确认要删除吗 ？")) {
+                $(thisObj).closest("tr").remove();
+            }
+        }
+
+        var dialogdiv = $('<div class="excelss"  style="display: none;height: 400px;width:500px">\
+                            <form id="decodedfileform"  method="post"  enctype="multipart/form-data">\
+                                <input name="importexcelfile" type="file" style="height:25px;"/>\
+                            </form>\
+                        </div>');
+        function importExcel() {
+            dialogdiv.dialog({
+                width: 400,
+                height: 150,
+                buttons: {
+                    "导入": function () {
+                        $("#decodedfileform").postIframe(ctx + "/fjh/basicinfo/processproject/newprojectprocess/ProjectLibBascInfoProcessController/importExcel.vot", function (data) {
+                            alert(data)
+                            dialogdiv.dialog("destory").remove();
+                        });
+                    }
+                }
+            });
+        }
+        function setCurrentStateBusi(thisobj) {
+            return true;
+        }
+    </script>
+
+
+    <div class="mysinglegridform" id="projectbasicinfo"
+        style="width: 1100px; padding-top: 20px; height: auto; margin-bottom: 50px">
+        <div class="condi_container clearfix" style="width: 1100px;">
+            <span class="cd_name">部门：</span>
+            <span class="cd_val">
+                <input type="text" name="deptsid" value="${sessionScope.service.deptsid }"
+                    default="${sessionScope.service.deptsid }" style="display: none" />
+                <input type="text" name="deptname" readonly="true" value="${sessionScope.service.deptname }"
+                    default="${sessionScope.service.deptname }" />
+            </span>
+            <span class="cd_name">项目名称：</span>
+            <span class="cd_val">
+                <input name="projectname" maxlength2="100" required2="true"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false" />
+            </span>
+            <span class="cd_name">项目设立时间：</span>
+            <span class="cd_val">
+                <input name="createtime" required2="true" class="date"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false" />
+            </span>
+        </div>
+        <div class="condi_container clearfix" style="width: 1100px; height: 50px">
+            <div class="cd_name">项目开始时间：</div>
+            <div class="cd_val">
+                <input name="begintime" class="date" required2="true"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false" />
+            </div>
+            <div class="cd_name">项目结束时间：</div>
+            <div class="cd_val">
+                <input name="endtime" class="date"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false" />
+            </div>
+            <span class="cd_name">项目负责人：</span>
+            <span class="cd_val" style="width: 250px">
+                <input type="text" name="creatorname" value="${sessionScope.service.username }"
+                    default="${sessionScope.service.username }" style="display: none" />
+                <input type="text" name="creatoruser" value="${sessionScope.service.user }"
+                    default="${sessionScope.service.user }" style="display: none" />
+                <input type="text" name="creatorsid" value="${sessionScope.service.usersid }"
+                    default="${sessionScope.service.usersid }" style="display: none" />
+                <input name="headuser" readonly="true"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false" />
+                <input name="headname" style="display: none" />
+                <input name="headsid" style="display: none" />
+                <button type="button" class="btn btn-sm btn-default" onclick="selectHeader()"
+                    includein="create,update,proopt" style="margin-left: 2px;">请选择</button>
+            </span>
+        </div>
+        <div class="condi_container clearfix" style="width: 1100px;">
+            <span class="cd_name">项目内容：</span>
+            <span class="cd_val" style="width: 750px;">
+                <textarea state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false"
+                    name="instruction" style="width: 750px; height: 150px; border-color: #dddddd;">
+                    </textarea>
+            </span>
+        </div>
+
+        <div class="condi_container" style="width: 1100px; height: 80px">
+            <div class="cd_name">项目运作形式：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="runtype" id="runtype" style="width: 750px; height: 70px; border-color: #dddddd;"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false">
+                    </textarea>
+            </div>
+        </div>
+
+        <div class="condi_container" style="width: 1100px; height: 80px">
+            <div class="cd_name">财务核算要求：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="financerequired" id="financerequired"
+                    style="width: 750px; height: 70px; border-color: #dddddd;"
+                    state="disabled:true;disabled.create:false;disabled.update:false;disabled.proopt:false">
+                    </textarea>
+            </div>
+        </div>
+        <div class="condi_container" style="width: 1100px; height: 80px">
+            <div class="cd_name">部门负责人意见：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="headeroption" id="headeroption"
+                    style="width: 750px; height: 70px; border-color: #dddddd;"
+                    state="disabled:true;disabled.create:true;disabled.update:true;disabled.dept:false;disabled.proopt:false">
+                    </textarea>
+            </div>
+        </div>
+        <div class="condi_container" style="width: 1100px; height: 80px; display: none">
+            <div class="cd_name">合规管理部意见：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="complianceoption" id="complianceoption"
+                    style="width: 750px; height: 70px; border-color: #dddddd;"
+                    state="disabled:true;disabled.create:true;disabled.update:true;disabled.dept:false;disabled.proopt:false">
+                    </textarea>
+            </div>
+        </div>
+        <div class="condi_container" style="width: 1100px; height: 80px">
+            <div class="cd_name">财务部门意见：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="financeoption" id="financeoption"
+                    style="width: 750px; height: 70px; border-color: #dddddd;"
+                    state="disabled:true;disabled.create:true;disabled.update:true;disabled.dept:false;disabled.proopt:false">
+                    </textarea>
+            </div>
+        </div>
+        <div class="condi_container" style="width: 1100px; height: 80px; display: none">
+            <div class="cd_name">分管领导意见：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="deptoption" id="deptoption" style="width: 750px; height: 70px; border-color: #dddddd;">
+                    </textarea>
+            </div>
+        </div>
+        <div class="condi_container" id="write" style="width: 1050px; min-height: 50px; height: auto; display: none">
+            <span class="cd_name">基金会领导批示：</span>
+            <span class="cd_val">
+                <input type="hidden" name="enduploadfile" id="enduploadfile_" />
+                <span class="file" required="true" id="enduploadfile" style="display: inline-block"></span>
+            </span>
+        </div>
+
+        <div class="condi_container" style="width: 1100px; height: 80px; float: left; display: none">
+            <div class="cd_name">基金会领导意见：</div>
+            <div class="cd_val" style="width: 800px;">
+                <textarea name="leaderoption" id="leaderoption"
+                    style="width: 750px; height: 70px; border-color: #dddddd;">
+                    </textarea>
+            </div>
+        </div>
+
+
+
+        <div class="condi_container" style="width: 1050px; min-height: 50px; height: auto">
+            <span class="cd_name">项目立项材料3：</span>
+
+            <div class="cd_val_upload" style="width: 750px; display: flex;">
+                <!-- -----------------第二个----------------- -->
+                <div style="width: 100%">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="form-group col-md-5" id="file">
+                            <div class="field-uploadform-excelfiles">
+                                <label class="control-label btn btn-primary" for="uploadform-excelfiles">选择文件</label>
+                                <label id="fileName"></label>
+
+                                <input type="file" id="uploadform-excelfiles" name="UploadForm[excelFiles][]" multiple
+                                    class="attachment-upload" style="display: none">
+                                <input type="hidden" name="uploadfile" id="uploadfile_" />
+                                <!--  <input type="button" id="fileUpload" value="上传文件" class="btn btn-success"
+                                style="margin-left: 15px;"> -->
+                                <div class="help-block"></div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <table role="presentation" class="table">
+                        <tbody id="files"></tbody>
+                    </table>
+                </div>
+
+                <!-- ---------------------------------- -->
+            </div>
+            <!-- <span class="cd_val">
+                     <input type="hidden" name="uploadfile" id="uploadfile_"/>
+                    <span class="file"  id="uploadfile" style="display: inline-block"  ></span>  
+                </span> -->
+
+
+
+        </div>
+        <div class="condi_container" id="nextper" includein="create,update" style="width: 1000px; clear: left">
+            <div class="cd_name" style="color: red;">部门负责人审批：</div>
+            <div class="cd_val" style="width: 400px">
+                <input name="var_candidatecreator" style="display: none">
+                <input name="candidatecreatorusersid" style="display: none">
+                <input name="candidatecreatoruser" readonly="true" required2="true">
+                <button type="button" class="btn btn-sm btn-default" onclick="addAuditCreate()">请选择</button>
+            </div>
+        </div>
+        <!-- <div style="clear: both;height: 20px;"></div>  -->
+
+    </div>
+
+    <script>
+
+        var fileList;
+        var allFile = [];
+        //FormData对象初始化
+        debugger
+        var form = $("#upload-forma")[0];
+        var formData = new FormData(form);
+        $("#uploadform-excelfiles").on('change', function (e) {
+            debugger
+
+            var fileError = 0;
+            fileList = e.currentTarget.files;
+            $.each(fileList, function (index, item) {
+                var fileName = item.name;
+                console.log(item, "item")
+                var fileEnd = fileName.substring(fileName.indexOf("."));
+
+                allFile.push(item);
+                $('#files').append('<tr style="padding-top: 7px;">' +
+                    '<td>' + fileName + '</td>' +
+                    '<td style="display: none" value=""></td>' +
+                    '<td>' + (item.size / 1024).toFixed(2) + 'K</td>' +
+                    '<td><label class="btn btn-danger delete" >删除</label></td>' +
+
+                    '</tr>');
+                //追加文件
+                formData.append('UploadForm[excelFiles][]', item);
+                var groupsid = $("#uploadfile_").val();
+                console.log(groupsid, "groupsid");
+                extracted2(groupsid);
+            });
+            if (fileError > 0) {
+                alert("只能上传 “.xlsx” 格式的文件!");
+                document.getElementById("upload-form").reset();
+                return;
+            }
+
+            var fileCount = $('#files').find('tr').length;
+            $('#fileName').html('共上传 ' + fileCount + ' 个文件');
+
+        });
+
+        $('#files').on('click', '.delete', function (e) {
+            var saveFile = [];
+            console.log(e, "e")
+            var deleteName = e.target.parentNode.previousElementSibling.previousElementSibling.textContent;
+            var delete_sid = e.target.parentNode.previousElementSibling.previousElementSibling.getAttribute('value');
+            var deleteIndex;
+            //将不删除的放入数组中
+            $.each(allFile, function (index, item) {
+                console.log(item.sid, "item.sid")
+                if (item.sid === delete_sid) {
+                    deleteIndex = index;
+                } else {
+                    saveFile.push(item);
+                }
+            });
+            $.ajax({
+                url: ctx + '/upload/delfile.vot?sid=' + delete_sid + '&enablepermanent=true&uploadtimeid=' + $.getNewsid(),
+                type: 'POST',
+                cache: false,
+            }).done(function (res) {
+                var groupsid = $("#uploadfile_").val();
+                getuploadedfileinfos(groupsid);
+            }).fail(function (res) {
+                alert("删除失败:" + res.msg);
+            });
+
+            allFile.splice(deleteIndex, 1);
+            //表单数据重置
+            /*  formData.delete('UploadForm[excelFiles][]'); */
+            //将不删除的数组追加的formData中
+            /* 	       $.each(saveFile, function (index, item) {
+                            formData.append('UploadForm[excelFiles][]', item);
+                        }); */
+
+            if (isIE() || isIE11()) {
+                e.target.parentNode.parentNode.removeNode(true);
+            } else {
+                e.target.parentNode.parentNode.remove();
+            }
+            var fileCount = $('#files').find('tr').length;
+            $('#fileName').html('共上传 ' + fileCount + ' 个文件');
+
+        });
+
+
+
+
+        function progressBar(evt) {
+            var loaded = evt.loaded; //已经上传大小情况
+            console.log(loaded, "loaded")
+            var tot = evt.total; //附件总大小
+            var per = Math.floor(100 * loaded / tot); //已经上传的百分比
+            console.log("已经上传了：" + per);
+            $(".progress").css("display", "block");
+            if (per === 100) {
+                per = "文件上传成功!";
+                $("#uploadFile_rate").html(per);
+                $("#uploadFile_progressBar").width(100 + "%");
+                return;
+            }
+            $("#uploadFile_rate").html(per + "%");
+            $("#uploadFile_progressBar").width(per + "%");
+        }
+
+        function getuploadedfileinfos(groupsid, isDelete = true) {
+            $.ajax({
+                url: ctx + '/upload/getuploadedfileinfos.vot?filegroupsid=' + groupsid,
+                type: 'POST',
+                cache: false,
+            }).done(function (res) {
+                res = JSON.parse(res);
+                allFile = res;
+                $('#files').empty();
+                $.each(res, function (index, item) {
+                    if (isDelete) {
+                        $('#files').append(' <!--startprint--> <tr style="padding-top: 7px;">' +
+                            '<td>' + item.filename + '</td>' +
+                            '<td style="display: none" value="' + item.sid + '">' + fileName + '</td>' +
+                            '<td>' + (item.filesize / 1024).toFixed(2) + 'K</td>' +
+                            '<td><label class="btn btn-danger delete" >删除</label></td>' +
+                            '<td><a type="button"  class="btn btn-success pull-right" id="fileDown" >文件下载</a></td>' +
+                            /*    '<td><a type="button"  class="btn btn-success" id="custom_print" onclick="doPrint()" >预览打印</a></td>' +  */
+                            '</tr> <!--endprint--> ');
+
+                    } else {
+                        $('#file').css({ 'display': 'none' });
+                        $('#files').append(' <!--startprint--> <tr style="padding-top: 7px;">' +
+                            '<td>' + item.filename + '</td>' +
+                            '<td style="display: none" value="' + item.sid + '"></td>' +
+                            '<td></td>' +
+                            '<td><label class="" ></label></td>' +
+                            '<td><a type="button"  class="btn btn-success pull-right" id="fileDown" >文件下载</a></td>' +
+                            '</tr> <!--endprint--> ');
+                    }
+
+                })
+
+                $('#fileDown').on('click', function (e) {
+                    /*  文件下载 */
+                    console.log(e, "e")
+                    var sid = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.getAttribute('value');
+                    $.postIframe(ctx + '/custom/downloadUploadedFile.vot?sid=' + sid);
+                    var groupsid = $("#uploadfile_").val();
+                    getuploadedfileinfos(groupsid, isDelete);
+                });
+
+                $('#custom_print').on('click', function (e) {
+                    var sid = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.getAttribute('value');
+                    if ("" == "pdf") {
+                        previewChannel(sid);
+                    } else {
+                        // 图片
+                        window.open(ctx + '/custom/ViewFile.vot?sid=' + sid);
+                    }
+
+                });
+
+
+            }).fail(function (res) {
+                alert("获取文件组失败:" + res.msg);
+            });
+
+        };
+
+        function extracted() {
+            var len = 1;
+            if (len > 0) {
+                var deleteBtn = $(".delete");
+
+                //通过ajax进行上传
+                $.ajax({
+                    url: ctx + '/custom/upload/uploadfiles.vot?uploadtimeid=' + $.getNewsid() + "&filegroupsid=" + groupsid + "&enablePermanent=false",
+                    type: 'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhr: function () {
+                        var xhr = $.ajaxSettings.xhr();
+                        if (xhr.upload) {
+                            xhr.upload.addEventListener("progress", progressBar, false);
+                        }
+                        return xhr;
+                    }
+                }).done(function (res) {
+                    res = JSON.parse(res);
+                    if (res.code === 'ok') {
+                        var timer2 = setTimeout(function () {
+                            $(".progress").css("display", "none");
+                        }, 2000);
+
+                    }
+                    var groupsid = $("#uploadfile_").val();
+                    getuploadedfileinfos(groupsid);
+                    //表单数据重置
+                    formData.delete('UploadForm[excelFiles][]');
+
+                }).fail(function (res) {
+                    alert("文件上传失败:" + res.msg);
+                });
+            } else {
+                alert("请选择需要上传的文件！");
+            }
+        }
+
+        function extracted2(groupsid) {
+            /*
+                参数说明:
+                opt.id : 页面里file控件的ID;
+                opt.frameName : iframe的name值;
+                opt.url : 文件要提交到的地址;
+                opt.format : 文件格式，以数组的形式传递，如['jpg','png','gif','bmp'];
+                opt.callBack : 上传成功后回调;
+            */
+
+            ajaxUpload({
+                id: 'uploadform-excelfiles',
+                frameName: 'frameName',
+                url: ctx + '/custom/upload/uploadfiles.vot?uploadtimeid=' + $.getNewsid() + "&filegroupsid=" + groupsid + "&enablePermanent=false",
+                format: ['jpg', 'png', 'gif', 'bmp'],
+                callBack: function (data) {
+                    data = JSON.parse(data);
+                    if (data.code === 'ok') {
+                        var timer2 = setTimeout(function () {
+                            $(".progress").css("display", "none");
+                        }, 2000);
+
+                    }
+                    var groupsid = $("#uploadfile_").val();
+                    getuploadedfileinfos(groupsid);
+                }
+            })
+        }
+
+
+
+        function ajaxUpload(opt) {
+
+            var iName = opt.frameName; // 太长了，变短点
+            var iframe, form, file, fileParent;
+            // 创建iframe和form表单
+            iframe = $('<iframe name="' + iName + '" style="display: none;" />');
+            form = $('<form method="post" style="display:n1one;" target="' + iName + '" action="' + opt.url + '"  name="form_' + iName + '" enctype="multipart/form-data" />');
+            file = $('#' + opt.id); // 通过id获取flie控件
+            fileParent = file.parent(); // 存父级
+            file.appendTo(form);
+            // 插入body
+            $(document.body).append(iframe).append(form);
+
+            // 取得所选文件的扩展名
+            /* var fileFormat=/\.[a-zA-Z]+$/.exec(file.val())[0].substring(1);
+            if(opt.format.join('-').indexOf(fileFormat)!=-1){
+                
+            }else{
+                file.appendTo(fileParent); // 将file控件放回到页面
+                iframe.remove();
+                form.remove();
+                alert('文件格式错误，请重新选择！');
+            }; */
+            form.submit();// 格式通过验证后提交表单;
+
+            // 文件提交完后
+            iframe.load(function () {
+                var data = $(this).contents().find('body').html();
+                file.appendTo(fileParent);
+                iframe.remove();
+                form.remove();
+                opt.callBack(data);
+            })
+        }
+
+        /**
+         * 判断是否是IE
+         */
+        function isIE() {
+            if (!!window.ActiveXobject || "ActiveXObject" in window) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        /**
+         * 判断是否是IE11
+         */
+        function isIE11() {
+            if ((/Trident\/7\./).test(navigator.userAgent)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function clearFileCompont() {
+            $('#files').empty();
+            $('#fileName').empty();
+            allFile = [];
+        }
+
+        function previewChannel(sid) {
+            // console.log('test-id',id);
+            let url = ctx + '/custom/downloadUploadedFile.vot?sid=' + sid;
+            const ele = document.createElement('a');
+            ele.setAttribute('href', url); //预览文件的url地址
+            ele.setAttribute('target', "_blank"); //预览文件的url地址
+            ele.click();
+        }
+
+
+        $(function () {
+            $("#projectbasicinfo").closest("form").unbind("openedCreateForm").bind("openedCreateForm", function () {
+                debugger
+                setTimeout(function () {
+                    clearFileCompont();
+                    var fsid = $.getNewsid();
+                    $("#uploadfile_").val(fsid);
+
+                    if ($("#uploadfile").data('uiFileupload')) {
+                        $("#uploadfile").fileupload("destroy");
+                    }
+                    $("#uploadfile").fileupload({
+                        autosave: true,
+                        filegroupsid: fsid,
+                        htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                        enablePermanent: false,
+                        filegroupsidinput: $("[name=uploadfile]")
+                    });
+                }, 500);
+            });
+
+            $("#projectbasicinfo").closest("form").unbind("openedUpdateForm").bind("openedUpdateForm", function (e, data) {
+                debugger
+                clearFileCompont();
+                if ("create" == $("#projectbasicinfo").closest("form").getCurrentState()) {
+                    setTimeout(function () {
+
+                        fsid = $("#uploadfile_").val();
+
+                        if ($("#uploadfile").data('uiFileupload')) {
+                            $("#uploadfile").fileupload("destroy");
+                        }
+
+                        $("#uploadfile").fileupload({
+                            autosave: true,
+                            htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                            filegroupsid: fsid,
+                            enablePermanent: false,
+                            filegroupsidinput: $("[name=uploadfile]")
+                        });
+                    }, 500);
+                } else if ("proopt" == $("#projectbasicinfo").closest("form").getCurrentState()) {
+                    $("#projectbasicinfo").closest("form").setCurrentState("proopt");
+                    $("#nextper").hide();
+                    setTimeout(function () {
+                        fsid = $("#uploadfile_").val();
+
+                        if ($("#uploadfile").data('uiFileupload')) {
+                            $("#uploadfile").fileupload("destroy");
+                        }
+
+                        $("#uploadfile").fileupload({
+                            autosave: true,
+                            htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                            filegroupsid: fsid,
+                            enablePermanent: false,
+                            filegroupsidinput: $("[name=uploadfile]")
+                        });
+                    }, 500);
+                } else {
+                    setTimeout(function () {
+                        fsid = $("#uploadfile_").val();
+                        console.log("fsid1", fsid)
+                        if ($("#uploadfile").data('uiFileupload')) {
+                            $("#uploadfile").fileupload("destroy");
+                        }
+
+                        $("#uploadfile").fileupload({
+                            autosave: true,
+                            readonly: true,
+                            htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                            filegroupsid: fsid,
+                            enablePermanent: false,
+                            filegroupsidinput: $("[name=uploadfile]")
+                        });
+
+                        //	$("#write").show();
+
+                        var endfsid = $.getNewsid();
+                        $("#enduploadfile_").val(endfsid);
+
+                        if ($("#enduploadfile").data('uiFileupload')) {
+                            $("#enduploadfile").fileupload("destroy");
+                        }
+                        $("#enduploadfile").fileupload({
+                            autosave: true,
+                            filegroupsid: endfsid,
+                            htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                            enablePermanent: false,
+                            filegroupsidinput: $("[name=enduploadfile]")
+                        });
+                    }, 500);
+                }
+            });
+
+            $("#projectbasicinfo").closest("form").unbind("openViewForm").bind("openViewForm", function (e, data) {
+                debugger
+                $.ajaxSettings.async = false;
+                var bln = true;
+                bln = setCurrentStateBusi(data);
+                setTimeout(function () {
+                    fsid = $("#uploadfile_").val();
+                    console.log("fsid", fsid)
+                    if ($("#uploadfile").data('uiFileupload')) {
+                        $("#uploadfile").fileupload("destroy");
+                    }
+
+                    getuploadedfileinfos(fsid, false);
+                    /* 			$("#uploadfile").fileupload({
+                                    readonly:bln,
+                                    autosave:true,
+                                    filegroupsid:fsid,
+                                    htmlText:'<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                                    enablePermanent: false, 
+                                    filegroupsidinput: $("[name=uploadfile]")
+                                }); */
+
+
+
+
+                }, 500);
+                if ('E' == data.auditvalue) {
+                    //$("#write").show();
+                    setTimeout(function () {
+                        endfsid = $("#enduploadfile_").val();
+                        console.log("endfsid", endfsid)
+                        if ($("#enduploadfile").data('uiFileupload')) {
+                            $("#enduploadfile").fileupload("destroy");
+                        }
+                        $("#enduploadfile").fileupload({
+                            readonly: true,
+                            autosave: true,
+                            filegroupsid: endfsid,
+                            htmlText: '<img src="' + ctx + "/themes/fjh/assets/addfujian.png" + '" hspace="0" vspace="5" align="left"/><br>',
+                            enablePermanent: false,
+                            filegroupsidinput: $("[name=enduploadfile]")
+                        });
+
+                    }, 500);
+                }
+                if ($("[name=deptoption]").val() != "") {
+                    $("[name=deptoption]").closest(".condi_container").css("display", "block");
+                }
+                if ($("[name=leaderoption]").val() != "") {
+                    $("[name=leaderoption]").closest(".condi_container").css("display", "block");
+                }
+                if ($("[name=complianceoption]").val() != "") {
+                    $("[name=complianceoption]").closest(".condi_container").css("display", "block");
+                }
+
+
+            });
+
+            if (sessionScope.service.usersid == "1234") {
+                if (window.hasinit)
+                    return;
+                hasinit = true;
+                $('<input class="btn btn-sm btn-default" type="button" style="margin-right:7px;" onClick="importExcel()" value="导入已有项目" />').prependTo(".func_span").button();
+            }
+
+        })
+
+
+
+
+
+
+        /*  */
+    </script>
+
+
+    <span id="gk_upload_flag">gk_</span>
+    <div class="cd_val_upload" style="width: 750px; display: flex;">
+        <!-- -----------------第二个----------------- -->
+        <div style="width: 100%">
+            <div class="row" style="margin-top: 10px;">
+                <div class="form-group col-md-5" id="file">
+                    <div class="field-uploadform-excelfiles">
+                        <label class="control-label btn btn-primary" for="uploadform-excelfiles">选择文件</label>
+                        <label id="fileName"></label>
+
+                        <input type="file" id="uploadform-excelfiles" name="UploadForm[excelFiles][]" multiple
+                            class="attachment-upload" style="display: none">
+                        <input type="hidden" name="uploadfile" id="uploadfile_" />
+                        <!--  <input type="button" id="fileUpload" value="上传文件" class="btn btn-success"
+                style="margin-left: 15px;"> -->
+                        <div class="help-block"></div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <table role="presentation" class="table">
+                <tbody id="files"></tbody>
+            </table>
+        </div>
+        <!-- ---------------------------------- -->
+        
+    </div>
+    
+
+</body>
+
+<script src="./gk_upload.js"></script>
+
+</html>

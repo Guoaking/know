@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .control{
+           background: #3a0;
+       }
+       .main_box{
+           width: 50px;
+           border-radius: 12px;
+           background: #ccc;
+           padding:2px;
+           position: relative;
+           height: 24px;
+       }
+       .switch_box{
+           width: 20px;
+           height: 20px;
+           border-radius: 50%;
+           background: #fff;
+           position:absolute;
+           left :2px;
+           transition: all .3s;
+
+       }
+
+        .control .switch_box{
+            left: 100%;
+           margin-left: -20px;
+        }
+   </style>
+</head>
+<body>
+    <div id="id_main_box1"></div>
+    <div id="id_main_box2"></div>
+    <div id="id_main_box3"></div>
+    <button id="btn1"> 第一个操作控制</button>
+</body>
+
+<script src="../ref/jquery.min.js"></script>
+<script src="./test.js"></script>
+<script>
+    $(function(){
+        var sw1 = fnSwitch({id:"#id_main_box1",colorActive:"red",colorInActive:"black"})
+        fnSwitch({id:"#id_main_box2",default:true})
+        fnSwitch({id:"#id_main_box3"})
+
+        $('#btn1').on("click",function(){
+            var v = sw1.getValue();
+            sw1.setValue(!v);
+        })
+    })
+    
+</script>
+</html>

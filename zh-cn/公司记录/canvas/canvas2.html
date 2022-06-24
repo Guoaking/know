@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./ref/jquery.min.js"></script>
+    <script src="./ref/vue.js"></script>
+
+    <style>
+        #mycanvas{
+            border: 1px solid #000000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>{{abc}}</div>
+        <canvas id="mycanvas" width="800" height="600">
+            123123123
+        </canvas>
+        <button id='btn0'>清空</button>
+        <button id='btn1'>实心矩形</button>
+        <button id='btn2'>空心矩形</button>
+        <button id='btn3'>路径</button>
+        <button id='btn4'>圆弧</button>
+        <button id='btn5'>细线</button>
+        <button id='btn6'>粗线</button>
+        <button id='btn7'>文本</button>
+        <button id='btn8'>线性渐变</button>
+</body>
+
+<script>
+    debugger
+    var canvas = $('#mycanvas')[0]; // document.getElementById("mycanvas")
+    console.log(canvas)
+    var ctx = canvas.getContext("2d");
+    console.log(ctx)
+    
+    $('#btn0').on('click',()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+    });
+
+    $('#btn1').on('click',()=>{
+        //设置颜色
+        ctx.fillStyle = 'green';
+        // 绘制矩形 Rect
+        ctx.fillRect(100,100,50,50);
+    });
+
+    $('#btn2').on('click',()=>{
+        //设置颜色
+        ctx.strokeStyle = 'blue';
+        // 绘制矩形 Rect
+        ctx.strokeRect(100,200,50,50);
+    });
+
+    $('#btn3').on('click',()=>{
+        //不规则的多边形
+        //设置颜色
+        ctx.strokeStyle = 'blue';
+        // 创建路径
+        ctx.beginPath();
+        // 移动绘制点
+        ctx.moveTo(100,100)
+        //描述行进路径
+        ctx.lineTo(200,200)
+        ctx.lineTo(400,180)
+        ctx.lineTo(380,50)
+        //封闭路径
+        ctx.closePath();
+        //绘制
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+    });
+    $('#btn4').on('click',()=>{
+        //圆弧
+        ctx.beginPath();
+        ctx.arc(100,75,50,0,2*Math.PI);
+        ctx.stroke();
+    });
+
+    $('#btn5').on('click',()=>{
+        //线
+        ctx.beginPath();
+        // 移动绘制点
+        ctx.moveTo(100,100)
+        //描述行进路径
+        ctx.lineTo(200,200)
+        ctx.lineTo(400,180)
+        ctx.lineTo(380,50)
+        //butt round square
+        ctx.lineCap = 'round'
+        //线转折的形状 bevel裁剪 round 圆角 miter 直角 (默认)
+        ctx.lineJoin = 'round'
+        // 虚线 
+        ctx.setLineDash([14,12])
+        ctx.stroke()
+    });
+    $('#btn6').on('click',()=>{
+        //粗线
+        ctx.beginPath();
+        // 移动绘制点
+        ctx.moveTo(100,100)
+        //描述行进路径
+        ctx.lineTo(200,200)
+        ctx.lineTo(400,180)
+        ctx.lineTo(380,50)
+        ctx.lineWidth = 20
+        ctx.stroke()
+    });
+
+    $('#btn7').on('click',()=>{
+        //粗线
+        ctx.shadowOffsetX = 1
+        ctx.shadowOffsetY = 1
+        ctx.shadowBlur = 0.3
+        ctx.shadowColor = 'red'
+        ctx.font = "30px 微软雅黑"
+        ctx.textAlign = "start"
+        ctx.fillText("你好",100,100)
+    });
+    $('#btn8').on('click',()=>{
+        //线性渐变
+        var linear = ctx.createLinearGradient(0,0,200,200)
+        linear.addColorStop(0,'red')
+        linear.addColorStop(0.3,'blue')
+        linear.addColorStop(0.5,'yellow')
+        linear.addColorStop(0.8,'purple')
+        ctx.fillStyle = linear;
+        ctx.fillRect(10,10,200,100)
+    });
+
+    
+    var left = 100;
+    // setInterval(()=>{
+    //     //清除
+    //     ctx.clearRect(0,0,600,600);
+    //     //更新
+    //     left +=10;
+
+    //     ctx.fillRect(left,100,100,100);
+    
+    // },100)
+
+    //面向对象
+    function Rect(x,y,w,h,color){
+        //维护状态
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.color = color;
+    }
+    Rect.prototype.update = function (params) {
+        this.x++;
+    }
+
+    Rect.prototype.render = function(){
+        ctx.fillStyle = this.color;
+        //渲染
+        ctx.fillRect(this.x,this.y,this.w,this.h);
+    }
+    // 实例化
+    var r1 = new Rect(100,100,50,50,"purple")
+    var r2 = new Rect(200,200,50,50,"blue")
+    // 动画过程
+    // setInterval(()=>{
+    //     //清除
+    //     ctx.clearRect(0,0,canvas.width,canvas.height);
+    //     //更新
+    //     r1.update();
+    //     //渲染
+    //     r1.render();
+
+    //     r2.update();
+    //     //渲染
+    //     r2.render();
+    // },10)
+    
+    // new Vue({
+    //     el : '#app',
+    //     data:{
+    //         abc:"666"
+    //     },
+    //     created() {
+            
+    //     },
+    //     methods: {
+            
+    //     },
+    // })
+</script>
+</html>

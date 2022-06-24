@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="ref/style.css" rel="stylesheet">
+    <link href="ref/bootstrap.min.css" rel="stylesheet">
+    <title>笔记</title>
+    <style>
+        .videoinfo .tree {
+            border: unset;
+        }
+
+        .videoinfo .tree li {
+            width: 200px;
+        }
+
+        .videoinfo .tree li span {
+            border: unset;
+        }
+
+        .videoinfo .tree li.parent_li>span:hover {
+            border: unset !important;
+
+        }
+
+        .videoinfo .tree li.parent_li>span:hover+ul li span {
+            border: unset !important;
+            background: unset !important;
+        }
+
+        .videoinfo .tree li::before,
+        .tree li::after {
+            content: unset !important;
+        }
+
+        .videoinfo ul {
+            padding-inline-start: 10px !important;
+            width: 100%;
+            height: 100%;
+        }
+
+        .videoinfo .icon-leaf .list-item {
+            background-color: #E5F3FD;
+            margin-bottom: 4px;
+        }
+
+        .videoinfo #profile>div>ul>li>span {
+            width: 100%;
+            background: #ccc;
+            display: block;
+            line-height: 30px;
+            border-radius: 0px;
+            margin-bottom: 4px;
+        }
+
+
+        #videoinfo {
+
+            height: 100%;
+        }
+
+        #videoinfo #home {
+            padding: 24px;
+        }
+
+
+        #videoinfo .tab-content {
+
+            padding: 24px;
+        }
+
+        .test {
+            width: 50px;
+            height: 200px;
+            overflow: auto;
+            float: left;
+            margin: 5px;
+            border: none;
+        }
+
+        .scrollbar {
+            width: 30px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .test-1::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 10px;
+            /*高宽分别对应横竖滚动条的尺寸*/
+            height: 1px;
+        }
+
+        .test-1::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: #535353;
+        }
+
+        .test-1::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background: #ededed;
+        }
+
+        .test-2::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .test-2::-webkit-scrollbar-track {
+            background: #eee;
+            border-radius: 2px;
+        }
+
+        .test-2::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 5px;
+        }
+
+        .test-2::-webkit-scrollbar-thumb:hover {
+            background: #c0c0c0;
+        }
+
+        .test-2::-webkit-scrollbar-corner {
+            background: #179a16;
+        }
+
+        ::-webkit-scrollbar-button {
+            display: block;
+        }
+
+        .test-3::-webkit-scrollbar-button:horizontal:single-button:start {
+            width: 24px;
+            background: url("../img/scroll_btn.png") 0 -52px no-repeat;
+            cursor: pointer;
+        }
+
+        .test-3::-webkit-scrollbar-button:horizontal:single-button:end {
+            width: 24px;
+            background: url("../img/scroll_btn.png") 0 -77px no-repeat;
+            cursor: pointer;
+        }
+
+        .test-3::-webkit-scrollbar-button:vertical:single-button:start {
+            width: 16px;
+            background: url("../img/scroll_btn.png") -3px 0px no-repeat;
+            cursor: pointer;
+        }
+
+        .test-3::-webkit-scrollbar-button:vertical:single-button:end {
+            width: 16px;
+            background: url("../img/scroll_btn.png") -3px -26px no-repeat;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="videoinfo" class="videoinfo">
+
+        <img :src="imgpath" alt="">
+        <div class="main">
+            <div>
+                <div>
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="myTabs">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                data-toggle="tab">Home</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                data-toggle="tab">Profile</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+                                data-toggle="tab">Messages</a></li>
+                        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
+                                data-toggle="tab">Settings</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="tree">
+                                <child-component :list='chapter'></child-component>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile">...</div>
+                        <div role="tabpanel" class="tab-pane" id="messages">...</div>
+                        <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                    </div>
+
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="myTabs">
+                        <li role="presentation" class="active"><a href="#d" aria-controls="d" role="tab"
+                                data-toggle="tab">Home</a></li>
+                        <li role="presentation"><a href="#a" aria-controls="a" role="tab" data-toggle="tab">Profile</a>
+                        </li>
+                        <li role="presentation"><a href="#b" aria-controls="b" role="tab" data-toggle="tab">Messages</a>
+                        </li>
+                        <li role="presentation"><a href="#c" aria-controls="c" role="tab" data-toggle="tab">Settings</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="d">
+                            <div class="tree">
+                                <child-component :list='chapter'></child-component>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="a">...</div>
+                        <div role="tabpanel" class="tab-pane" id="b">...</div>
+                        <div role="tabpanel" class="tab-pane" id="c">...</div>
+                    </div>
+
+                </div>
+
+                <!-- Tab panes -->
+                <!-- <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="tree">
+                            <child-component :list='chapter'></child-component>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+
+
+                    </div>
+
+                </div> -->
+
+
+            </div>
+        </div>
+
+
+        <div class="test test-3">
+            <div class="scrollbar"></div>
+        </div>
+    </div>
+
+
+    <script src="ref/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+        </script>
+    <script src="ref/vue.js"></script>
+
+
+    <script>
+        var num = 0;
+        var child = {
+            template: "<ul><li class='list-item' v-for='(item, index) in list' :key='index'><span @click='goPlay(item)'> <i class='icon-folder-open'>{{item.p}}</i>{{item.n}}</span> <ul v-if='item.children' class='icon-leaf'><list :list='item.children'></list></ul> </li></ul>",
+            data: function () {
+                return {
+                    chapter: []
+                }
+            },
+            props: {
+                list: Array
+            },
+            methods: {
+                goPlay(item) {
+                    // 传入具体的chapter_id  chapter_url
+
+                    if (item.pid === "0") {
+                        console.log("0级不跳转")
+                    } else {
+                        console.log(item, "组件点了跳转")
+                    }
+
+                    // if (paramsdll.params && paramsdll.params.sid) {
+                    //     let course_id = paramsdll.params.sid;
+
+                    //     var dllparamsvar = { course_id: course_id };
+                    //     if(item){
+                    //         dllparamsvar['item'] = item
+                    //     }
+
+                    //     $(".modulecontainer .mctab").tabadd({ label: "播放" }, {}, ".modulecontainer>.tab-content", function (tabpane) { 
+                    //         var tform = $("<form class='form-horizontal' onsubmit='return false;'></form>");
+                    //         tabpane.append(tform);
+                    //         tform.load(ctx + "/pxkh/video/videoplay.jsp", function () {
+                    //             if (window['videoplay']) {
+                    //                 window['videoplay'](dllparamsvar);
+                    //             }
+                    //         });
+                    //     });
+
+                    // }else{
+                    //     console.error("sid错误"+paramsdll.params);
+                    // }
+
+
+                },
+            },
+            name: "List",
+        }
+
+        new Vue({
+            el: '#videoinfo',
+            data: function () {
+                return {
+                    defaulturl: 'http://152.136.227.236:8084/pxkh/courseupload/1607332185138/1607332185138.jpg', //'87ECD257-B9F4-6DA1-B4D9-3EF340C2E9EA',
+
+                    info: {
+                        content: '介绍',
+                        title: '数学',
+                        theorytype: '',
+                        teachername: '',
+                        introduction: '',
+                        handoutskeyword: '',
+                        detailintroduction: '',
+
+                    },
+                    imgpath: '',
+                    chapter: [{
+                        "sid": "1607419363483",
+                        "sectionname": "第一章",
+                        "knobblemsg": null,
+                        "timelength": null,
+                        "pid": "0",
+                        "handoutssid": "1607419335436",
+                        "cd": [],
+                        "n": "第一章",
+                        "parent_id": null,
+                        "id": "1607419363483",
+                        "open": true,
+                    },
+                    {
+                        "sid": "1607419367916",
+                        "sectionname": "第二章",
+                        "knobblemsg": null,
+                        "timelength": null,
+                        "pid": "0",
+                        "handoutssid": "1607419335436",
+                        "cd": [],
+                        "n": "第二章",
+                        "parent_id": null,
+                        "id": "1607419367916",
+                        "open": true,
+                    },
+                    {
+                        "sid": "1607419371317",
+                        "sectionname": "老虎如何表达对人类的信任",
+                        "knobblemsg": "/courseupload/1607419335436/1607419363483/1607419371317.mp4",
+                        "timelength": "0",
+                        "pid": "1607419363483",
+                        "handoutssid": "1607419335436",
+                        "cd": [],
+                        "n": "老虎如何表达对人类的信任",
+                        "parent_id": "/courseupload/1607419335436/1607419363483/1607419371317.mp4",
+                        "id": "1607419371317",
+                        "open": true,
+                        "children": []
+                    },
+                    {
+                        "sid": "1607419682504",
+                        "sectionname": "我是视频mp4",
+                        "knobblemsg": "/courseupload/1607419335436/1607419367916/1607419682504.mp4",
+                        "timelength": "0",
+                        "pid": "1607419367916",
+                        "handoutssid": "1607419335436",
+                        "cd": [],
+                        "n": "我是视频mp4",
+                        "parent_id": "/courseupload/1607419335436/1607419367916/1607419682504.mp4",
+                        "id": "1607419682504",
+                        "open": true,
+                        "children": []
+                    }, {
+                        "sid": "1607419682504",
+                        "sectionname": "我是视频mp4",
+                        "knobblemsg": "/courseupload/1607419335436/1607419367916/1607419682504.mp4",
+                        "timelength": "0",
+                        "pid": "1607419367916",
+                        "handoutssid": "1607419335436",
+                        "cd": [],
+                        "n": "我是视频flv",
+                        "parent_id": "/courseupload/1607419335436/1607419367916/1607419682504.mp4",
+                        "id": "1607419682504",
+                        "open": true,
+                        "children": []
+                    }
+                    ],
+
+                }
+            },
+            created() {
+
+                let resArr = parentDeal(this.chapter, '0')
+                this.chapter = resArr
+                // this.$nextTick(() => {
+                //     this.$options.methods.initTree()
+                // })
+                console.log(resArr)
+
+
+            },
+            mounted() {
+                this.goPlay(this);
+                // this.$options.methods.initTree()
+            },
+            methods: {
+                goPlay(self) {
+                    // 传入具体的chapter_id
+                    /* 需要课程id  章节id 当前登录人;*/
+                    var base64Img = 'data:image/png;base64,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';
+                    //转换图片文件
+                    var file = base64ImgtoFile(base64Img);
+                    console.log("🚀 ~ file: index3.html ~ line 413 ~ goPlay ~ file", file)
+                    var reader = new FileReader();
+                    console.log("🚀 ~ file: index3.html ~ line 412 ~ goPlay ~ self.imgpath ", self.imgpath)
+
+                    if (/image/.test(file.type)) {//操作图像
+
+                        reader.readAsDataURL(file);
+
+                        var type = 'image';
+
+                    } else {//操作文本
+
+                        reader.readAsText(file);
+
+                        var type = 'text';
+
+                    }
+                    reader.onload = function () {
+                        var html="<img src=\" "+reader.result+" \">";//已经加载完了执行
+                        console.log(reader.result);
+                    };
+
+
+
+
+
+
+                }
+
+
+
+            },
+            initTree() {
+                console.log("初始化树")
+                let parent;
+
+                parent = $('.tree li:has(ul)').addClass('parent_li');
+                parent.find(' > span').attr('title', 'Collapse this branch');
+
+                // this.$nextTick(() => {
+                //     /* debugger;*/
+                //     let children = $('.tree li.parent_li > span').parent('li.parent_li').find(' > ul > ul > li');
+                //     children.hide('fast');
+                //     $('.tree li.parent_li > span').attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign')
+                //         .removeClass('icon-minus-sign');
+                // })
+
+                // 树点击事件
+                $('.tree li.parent_li > span').on('click', function (e) {
+
+                    var children = $(this).parent('li.parent_li').find(' > ul > ul > li');
+                    console.log(children)
+                    if (children.is(":visible")) {
+                        children.hide('fast');
+                        $(this).attr('title', 'Expand this branch').find(' > i').addClass(
+                            'icon-plus-sign')
+                            .removeClass('icon-minus-sign');
+                    } else {
+                        children.show('fast');
+                        $(this).attr('title', 'Collapse this branch').find(' > i').addClass(
+                            'icon-minus-sign').removeClass('icon-plus-sign');
+                    }
+                    e.stopPropagation();
+                });
+            },
+
+
+            components: {
+                "child-component": child
+            }
+        });
+
+
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+
+        function parentDeal(data, pid) {
+            //声明返回数组
+            let returnArr = [];
+            data.forEach((item) => {
+                if (item.pid === pid) {
+                    //除去最高层级的数据（id === 0）
+                    returnArr.push(item)
+                    //进入递归中处理 
+                    childrenDeal(data, item, item.sid)
+                }
+            })
+            return returnArr;
+        }
+
+
+        function childrenDeal(arr, itemData, itemId) {
+            //首先判断是否有子类  没有默认为空
+            itemData.children = itemData.children ? itemData.children : [];
+            var num = 1;
+            arr.forEach((item) => {
+                //递归条件
+                if (item.pid === itemId) {
+                    //找到则追加至上层数据children中
+                    item.p = 'P' + num++;
+                    itemData.children.push(item)
+                    //不断递归查找子类直到找不到子类本次递归结束才进入parentDeal函数进行下一最高层级操作
+                    childrenDeal(arr, item, item.sid)
+                }
+
+            })
+        }
+
+        function base64ImgtoFile(dataurl, filename = 'file') {
+            let arr = dataurl.split(',')
+            let mime = arr[0].match(/:(.*?);/)[1]
+            let suffix = mime.split('/')[1]
+            let bstr = atob(arr[1])
+            let n = bstr.length
+            let u8arr = new Uint8Array(n)
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n)
+            }
+            return new File([u8arr], `${filename}.${suffix}`, {
+                type: mime
+            })
+        }
+
+        // base64编码的图片
+        var base64Img = 'data:image/png;base64,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';
+        //转换图片文件
+        var imgFile = this.base64ImgtoFile(base64Img);
+
+
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>

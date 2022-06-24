@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件下载</title>
+
+    <link rel="stylesheet" href="../ref/bootstrap.min.css">
+
+
+</head>
+
+<body>
+    <div class="cd_val_upload" id="cd_val_upload" style="width: 750px; display: flex;">
+        <!-- -----------------第二个----------------- -->
+    </div>
+
+
+</body>
+
+
+<script src="../ref/jquery.min.js"></script>
+<script src="./gk_upload copy.js"></script>
+<script>
+    $(function () {
+        /**
+         * 1. 可以传入参数 实现自定义
+         * 2. 可以多个组件同时存在并且不冲突
+         * 3. 有出口方法可以查看数据
+         * 4. 有入口方法可以设置数据
+         * 
+         * */
+        fn_upload({main_id:"#cd_val_upload"});
+        
+    })
+
+</script>
+
+
+</html>

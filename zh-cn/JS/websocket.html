@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    Access-Control-Allow-Origin' header is present on the requested resource.
+    <title>Document</title>
+</head>
+<body>
+    <script language="javascript"type="text/javascript"> 
+        var wsUri ="ws://127.0.0.1:5500/JS/websocket.html";
+        var output; 
+         
+        function init() {
+            output = document.getElementById("output");
+            testWebSocket();
+        } 
+      
+        function testWebSocket() {
+            //1. 申请一个websocket对象
+            websocket = new WebSocket(wsUri);
+            //2.1  浏览器和socketserver链接成功触发
+            websocket.onopen = function(evt) {
+                onOpen(evt)
+            };
+
+            //2.2 收到关闭请求
+            websocket.onclose = function(evt) {
+                onClose(evt)
+            }; 
+
+            // 2.3 接收到websocketServer发送过来的数据 触发 
+            websocket.onmessage = function(evt) {
+                onMessage(evt)
+            };
+
+            //2.4  和socketserver 链接失败或者处理数据出现错误触发
+            websocket.onerror = function(evt) {
+                onError(evt)
+            };
+        } 
+      
+        function onOpen(evt) {
+            writeToScreen("浏览器和socketserver链接成功触发");
+            doSend("发送消息");
+        } 
+      
+        function onClose(evt) {
+            writeToScreen("收到关闭请求");
+        } 
+      
+        function onMessage(evt) {
+            writeToScreen('<span style="color: blue;">RESPONSE: '+ evt+'</span>');
+            websocket.close();
+        } 
+      
+        function onError(evt) {
+            writeToScreen('<span style="color: red;">ERROR:</span> '+ JSON.stringify(evt));
+        } 
+      
+        function doSend(message) {
+            writeToScreen("SENT: " + message); 
+            websocket.send(message);
+        } 
+      
+        function writeToScreen(message) {
+            var pre = document.createElement("p");
+            pre.style.wordWrap = "break-word";
+            pre.innerHTML = message;
+            output.appendChild(pre);
+        } 
+      
+        window.addEventListener("load", init, false); 
+    </script> 
+    <h2>WebSocket Test</h2> 
+    <div id="output"></div> 
+</body>
+</html>
