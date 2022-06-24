@@ -14,7 +14,8 @@
 | 我是第四个|<img width=200; > <font color=red >aa</font>|3
 
 
-```javascript\function a(){
+```javascript
+function a(){
 
 }()
 ```
