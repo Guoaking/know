@@ -74,7 +74,7 @@ static/pdf/nginx.pdf
 
 https://gbodigital.github.io/docsify-gifcontrol/#/
 
-![](static/gif/test.gif "-gifcontrol-disabled;")
+![](../static/gif/test.gif "-gifcontrol-disabled;")
 
 
 
