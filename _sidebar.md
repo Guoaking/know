@@ -21,3 +21,6 @@
     * [网站收集](zh-cn/工具/网站收集.md)
     * [git](zh-cn/工具/git.md)
     * [ssh](zh-cn/工具/ssh.md)
+
+* 数据结构
+    * [排序](zh-cn/数据结构/排序.md)
