@@ -16,3 +16,8 @@
     * [APIServer-1](zh-cn/K*S/APIServer-1.md)
     * [Controller-1](zh-cn/K*S/Controller-1.md)
     * [Controller-2](zh-cn/K*S/Controller-2.md)
+
+* 工具
+    * [网站收集](zh-cn/工具/网站收集.md)
+    * [git](zh-cn/工具/git.md)
+    * [ssh](zh-cn/工具/ssh.md)
