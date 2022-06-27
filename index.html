@@ -11,11 +11,31 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
   <link rel="stylesheet" href="//unpkg.com/docsify-gifcontrol/dist/docsify-gifcontrol.css" />
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css" />
-  <link rel="shortcut icon" type="image/x-icon"  href="./static/favicon.png"></link>
+  <link rel="shortcut icon" type="image/x-icon" href="./static/favicon.png">
+  </link>
 
   <style>
     .app-name {
       width: 50%
+    }
+
+    :root {
+      --docsifytabs-border-color: #ededed;
+      --docsifytabs-tab-highlight-color: purple;
+    }
+
+    .tab-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(35%, -45%);
+      padding: 0.25em 0.35em;
+      border-radius: 3px;
+      background: red;
+      color: white;
+      font-family: sans-serif;
+      font-size: 11px;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -29,7 +49,8 @@
       repo: "https://github.com/Guoaking/know",
       loadNavbar: true,
       loadSidebar: true,
-      subMaxLevel: 2,
+      maxLevel: 3,
+      subMaxLevel: 3,
       mergeNavbar: false,
       coverpage: true,
       notFoundPage: true,
@@ -75,17 +96,27 @@
         },
         isExpected: true,
       },
-    search: {
-      maxAge: 1000*60*5,
-          paths: 'auto',
-          placeholder: '搜索',
-          noData: '找不到结果',
-          pathNamespaces: [ '/'],
-        },
+      tabs: {
+        persist: true,      // default
+        sync: true,      // default
+        theme: 'material', // default
+        tabComments: true,      // default
+        tabHeadings: true       // default
+      },
+      search: {
+        maxAge: 1000 * 60 * 5,
+        paths: 'auto',
+        placeholder: '搜索',
+        noData: '找不到结果',
+        pathNamespaces: ['/'],
+      },
     };
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <!-- tab -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
 
   <!-- 搜索 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
@@ -118,20 +149,20 @@
 
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-  <script>
+  <script>x
     const gitalk = new Gitalk({
       clientID: "49b62908f202a2099797",
       clientSecret: "675689071ac6b6ecfc848a45ad7c88f0783bf98a",
       repo: "know",
       owner: "Guoaking",
-      admin: ["Guoaking"],
-      // facebook-like distraction free mode
-      distractionFreeMode: false,
+      admin: ["Guoaking"]
     });
 
     if (typeof navigator.serviceWorker !== 'undefined') {
-     navigator.serviceWorker.register('sw.js')
+      navigator.serviceWorker.register('sw.js')
     }
+
+    classChange.attrs();
   </script>
 </body>
 
