@@ -29,3 +29,13 @@ Host attp
 -v
 ssh -L 127.0.0.1:7777:ip:7777  boe
 ```
+
+
+
+## 远程连接mysql
+
+```bash
+docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+update user set host = '%' where user = 'root'
+select host,user,plugin,authentication_string from mysql.user;
+FLUSH PRIVILEGES;
