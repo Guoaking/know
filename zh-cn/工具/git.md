@@ -155,3 +155,25 @@ git stash drop stash{0} 删除暂存区
 ## fetch
 1. 只做了远程代码的更新
 
+
+--initial-branch 指定分支
+--bare 裸仓库, 没有工作目录
+-- template 通过模板来创建预先构建好的自定义git目录
+
+
+insteadOf 替换
+alias 别名
+
+git remote add origin_ssh git@github.com:git/git.git
+
+git remote add origin_http https://github.com/git/git.git
+
+[remote "origin_ssh"]
+ url
+
+
+git cat-file -p [id+id]
+
+Blob
+Tree
+Commit
