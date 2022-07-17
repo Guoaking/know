@@ -177,3 +177,15 @@ git cat-file -p [id+id]
 Blob
 Tree
 Commit
+object
+
+git commit --amend
+
+push -f
+
+git fsck --lost-found
+
+git reflog expire --expire=now --all
+git gc prune=now
+
+
