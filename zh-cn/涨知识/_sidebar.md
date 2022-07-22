@@ -5,5 +5,5 @@
 
 * 其他
 
-    * [http](./else/http.md)
-    * [sql](./sql/001.md)
+    * [http](else/http.md)
+    * [sql](sql/001.md)
