@@ -188,4 +188,9 @@ git fsck --lost-found
 git reflog expire --expire=now --all
 git gc prune=now
 
+git merge test --ff-only
+
+git merge test --no-ff
+
+
 
