@@ -56,5 +56,42 @@ crl 过期服务器, -> ocsp 响应程序 查询
 域名验证 dv -> 组织验证 ov -> 扩展验证 ev
 
 
+多进程, 不是多线程 -> 保证高可用 -> 线程共享地址空间  -> 引发地址空间段错误,会让线程全挂掉
+
+事件驱动模型, 一个work占用一个CPU 配置进程数量, 理解为什么是这样  进程架构, 命令是在向master发送信号
+
+kill -SIGHUP [pid]
+
+<!-- tabs:start -->
 
 
+#### **master**
+
+ * 监控worker进程
+   * CHLD
+ * 管理worker进程
+ * 接受信号
+   * TERM,INT
+   * QUIT  优雅
+   * HUP
+   * USR1
+   * USR2  kill使用 热部署使用
+   * WINCH
+
+#### **worker**
+
+* 接收信号
+   * TERM,INT
+   * QUIT
+   * USR1
+   * WINCH
+
+
+#### 命令行
+* reload: HUP
+* reopen: USR1
+* stop: TERM
+* quit: QUIT
+
+
+<!-- tabs:end ->
