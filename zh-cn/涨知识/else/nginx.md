@@ -95,3 +95,42 @@ kill -SIGHUP [pid]
 
 
 <!-- tabs:end ->
+
+建立3握手, nginx怎么收到读事件->
+
+内核获取等待处理的事件-> epoll
+
+epoll
+高并发链接中, 每次处理的活跃链接占比小
+
+eventpoll data
+遍历链表里只有活跃的链接
+
+读取http消息
+
+用户态代码完成链接切换
+
+
+底层 阻塞非阻塞 切换进程
+调用方式 : 同步异步 ->
+
+模块
+- core
+  - events
+    - epoll
+    - event_core
+  - http
+    - upstream
+    - http_core_module
+    - 响应过滤
+    - 请求处理
+  - mail
+    - core_module
+  - stream
+    - core_module
+  - core
+  - errlog
+  - thread_pool
+  - openssl
+- conf
+-
