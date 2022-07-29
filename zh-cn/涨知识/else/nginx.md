@@ -133,4 +133,12 @@ eventpoll data
   - thread_pool
   - openssl
 - conf
--
+
+
+连接池
+work_connection 占用内存 (232byte+96byte)*2
+
+内存池
+
+共享内存 -> 切分slot
+小对象,避免碎片, 避免重复初始化
