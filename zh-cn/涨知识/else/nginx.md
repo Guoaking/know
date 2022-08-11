@@ -239,8 +239,17 @@ http1.1
     z:用户功能, cdn, 固定用户, 到固定集群
 
 反向代理:
-  4: udp-> udp, tcp-> tcp
-  7: 应用层, 有业务信息, memecached, cgi, uwsig, grpc, http, websocket
+  4: udp-> udp, tcp-> tcp  传输层  stream模块  7个阶段
+      post_accept   readlip  通过proxy_prototocol 取出真实地址
+      preaccess     limt_connn 限制客户端并发连接数, 共享内存
+      access        access     客户端地址,决定是否可以访问
+      ssl           stram_ssl tcp -i lo port 80  下游 ssl -> 裸的 上游   ssl_preread, 解析下游tls证书信息
+      preread
+      content       return straem_proxy
+      log           access log  stream_log
+      IP地址透传     proxy_protocol协议, 修改报文中的源地址
+
+  7: 应用层, 有业务信息, memecached, cgi, uwsig, grpc, http, websocket  11个阶段
 
 缓存:
   时间缓存:缓存在nginx机器上, 直接返回内容
@@ -267,5 +276,29 @@ http1.1
   proxy_ssl_certificate, proxy_ssl_verify
 
 缓存
-  nginx缓存, 浏览器缓存
+  nginx缓存, 提升所有用户体验, 有效降低上游服务负载, 有网络消耗
+    expires, if-Mathch proxy_cache, proxy_cache_path,proxy_cache_valid,upstream_cache_status
+  浏览器缓存, 没有网络消耗, 失效返回304, 只能提升一个用户体验
+    etag if none match if modified since
+
+  缓存失效
+    热点资源->
+    合并回源请求, 所有请求等第一个相应返回, 或者超时后使用缓存响应客户端
+    proxy_cache_use_stale 定义陈旧缓存的用法
+
+  发起请求
+
+## 优化方法论
+
+* 软件层面
+  * 增大CPU利用率
+  * 增大内存利用率
+  * 增大磁盘IO利用率
+  * 增大网络带宽利用率
+* 硬件
+  * 网卡
+  * 磁盘
+  * CPU
+  * 内存
+* DNS划分
 
