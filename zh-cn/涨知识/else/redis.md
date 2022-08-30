@@ -18,3 +18,7 @@ distribution默认支持有三种:
 * modula: key hash值取模, 选择对应的srver
 * random: 随机选择一个server
 
+
+无限保存- > 磁盘满了
+
+aof 不会超过maxmem一倍, 所有的数据在内存

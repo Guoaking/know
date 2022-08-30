@@ -41,8 +41,7 @@ git remote -v // 查看关联的远程仓库的详细信息
 git remote remove <name> 删除远程仓库的关联
 git remote set-url origin <newurl> 修改远程仓库的关联地址
 git remote update origin --prune 刷新获取远程分支
-ls –a 查看代码
-
+git branch --set-upstream-to=origin/fg feat/fg   设置关联
 ```
 
 ## 删除分支
