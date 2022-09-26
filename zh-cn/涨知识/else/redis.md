@@ -87,7 +87,7 @@ hash list
 ### 对象类型实现 object.c
 
 ### 字符串键实现 t_string.c
-
+编码 ENCODING_INT|RAW
 embstr 一次内存直接减rdsojbect sds
 row  2次
 int 存成str 可以append
@@ -109,7 +109,7 @@ intset hashtable
 
 ### 有序集合 t_zset.c 排除zsl的
 ziplist skiplist
-skiplist -> zet (zskiplist,dict)
+skiplist -> zset (zskiplist,dict)
 ziplist 数量小于128&&所有元素成员长度小于64字节
 
 
@@ -126,6 +126,7 @@ ziplist 数量小于128&&所有元素成员长度小于64字节
 redisServer -> redisDB -> dict
 select
 expires dict 都通过
+dirty  距离上一次save后的修改次数
 定时删除  对内存友好 对cpu时间不友好
 惰性删除  对内存不友好, 永远不会被访问, 内存泄露 db.c/expireIfNeeded->deleteExpiredKeyAndPropagate
 
@@ -146,13 +147,84 @@ keyevent
 
 ### RDB rdb.c
 
+save 阻塞服务器进程
+bgsave 派生子进程
+autosave
+
+rdb.c/rdbSave
+rdb.c/rdbLoad
+
+REDIS db_version databases EOF check_sum
+SELECTDB,db_number, key_value_pairs
+EXPIRETIME ms TYPE(value类型) key value
+
 ### AOF aof.c
+保存执行的写命令来记录
+reidsServer.aof_buf
+aof.c/flushAppendOnlyFile
+appendfsync defualt(everysec) . no 最快 aways最慢
+
+创建伪客户端载入
+体积浪费 重写bgreweiteaof
+不需要读取就文件, 直接分析数据库
+
+重写aof会生成新的aof文件, 数据一致被原来的更小
+bgrewriteaofCommand aof.c/rewriteAppendOnlyFileBackground
+
 
 ## 选读
 
 ### 发布订阅
 
+订阅频道pubsub_channels
+subscribe
+subscribeCommand -> pubsubSubscribeChannel
+
+
+unsubscribe
+unsubscribeCommand-> pubsubUnsubscribeChannel
+
+订阅模式 pubsub_patterns
+psubscribe
+punsubscribe
+
+publist
+
+pubsub channels
+pubsub numsub
+pubsub numpat
+
 ### 事务实现
+
+事务多个命令请求打包,一次性,按顺序执行
+
+事务开始 multiCommand()
+命令入队 processCommand()- > queueMultiCommand ->
+事务执行 execCommand()
+
+原子(Atomicity)
+没有回滚机制 太复杂不符合简单高效的设计主旨
+错误都是编程错误产生,不开发
+
+一致性(Consistency)
+
+数据是一致的
+
+
+隔离性(ISolation)
+单线程执行事务
+
+耐久性(Duability)
+持久化 aof -> appendfsync-> always
+
+先进先出顺序
+watch REDIS_DIRTY_CAS 不安全
+
+
+### Lua
+
+EVAL
+
 
 ### SORT实现
 
@@ -172,7 +244,146 @@ slowlog.c	慢查询功能的实现。
 monitor.c	监视器功能的实现。
 
 ## 多机实现
+slaveof ip port
+### 2.8 salveof
+sync 主生成rdb文件 缓冲区记录命令, 发给slave
+传播, 主修改后, 给从发相同的命令 保持一致
+断线恢复问题大:sync是全量的 低效 费资源
+
+### 3.0 psync 替代sync
+1. 完整同步 full resync
+2. 部分同步 partial resync 处理断线重连问题
+   1. 复制偏移量
+   2. 复制积压缓冲区 固定长度的先进先出队列 偏移量在缓冲区就部分同步, 不在就完整同步
+      1. repl-backlog-size 128mb sec(重连需要配平均时间)*write_size_per_second(每秒写命令数据量)
+   3. 服务器运行id 确定唯一性, 如果从保存的主id不是现在连的主id, 说明连的不是之前的主, 做full resync
+
 
 ### replication.c	复制功能的实现代码。
 ### sentinel.c	Redis Sentinel 的实现代码。
+初始化
+1. 初始化服务器
+   1. 不使用数据库方面的命令, 事务命令, 持久化命令
+   2. 使用复制命令, 发布订阅命令, 文件时间处理器, 时间事件处理器
+2. 将普通的redis服务器使用代码替换成sentinel专用代码, 载入自己的命令, 替换默认配置
+3. 初始化sentinel状态
+4. 根据给定的配置文件, 初始化sentinel的监视的主主服务器列表sentinelState->masters->key name value - > sentinelRedisInstance
+5. 创建连向主服务器的网络连接
+
+方法和原理
+
+down-after-milliseconds 对 当前master和监视master的从,sentinel
+多个配置下线时长不同, 有的认为下线, 有的则不是
+SRI_S_DOWN 主观下线
+SRI_O_DOWN 客观下线
+
+is-master-by-addr 询问其他sentinel < - down_state, leader_runid, leader_epoch
+
+选举领头sentinel raft
+需要进行故障转移
+1. 从里选一个从作为主 salveof no one 转主
+   1. 正常未下线,最近通信,优先级高
+   2. 复制偏移量最大
+   3. runid 最小
+2. 其他从改为复制新主 salveof ip port, 槽指派给新主
+3. 旧主重新上线会成为新主
+
+
 ### cluster.c	Redis 集群的实现代码。
+node
+重新分片 通过redis-trib
+目标节点准备导入槽slot的键值对
+源节点准备迁移槽slot的键值对
+
+ask 错误
+moved
+多主?
+每个节点会记录那些槽位指派给了自己,
+检查槽是不是自己负责, 不然返回moved
+
+
+
+### 文件事件
+AE_READABLE
+AE_WRITEABLE
+连接应答处理器 acceptTcpHandler
+命令请求处理器 readQueryFromClient
+命令回复处理器 sendReplyToClient
+
+### 时间事件
+
+全局id, 到达时间when 时间处理器 timeProc
+定时事件 AE_NOMORE
+周期性事件 非AE_NOMORE
+时间在文件事件后
+
+serverCron
+
+时间事件的实际处理时间通常回避设定的到达时间晚一点
+
+### 客户端
+
+redisClient
+new Client
+存在RedisServer->clients
+flags表示客户端角色
+输入输出缓冲区
+命令信息cmd args
+时间记录
+被动关闭客户端
+fd -1(伪客户端)
+
+### 服务端
+
+#### 命令执行过程
+
+1. 客户端转换命令成协议格式,发送给服务器
+2. 服务端命令请求处理器执行
+    * 读取到客户端状态的输入缓冲区
+    * 分析请求, 保存到arg
+3. 找到执行实现函数, 得到回复
+    * 调用命令执行器
+      * argv[0] 找有没有指定的命令
+      * 找到命令的实现函数
+      * 校验是否有实现函数, 参数个数是否正确,身份验证,检查服务器内存.....
+      * 调用实现函数
+      * 后续工作,慢查询, aof, 更新时间, 更新计数器
+4. 命令返回给客户端
+#### serverCron
+默认100ms执行一次 管理服务器的资源, 保持服务器自身的良好运转
+获取时间需要做系统调用, 所以redisServer中的unixtime和msttime作为当前时间的缓存,精度不高
+clientCron() databasesCron() aofCron()
+处理服务器接受的SIGTREM信号,
+
+##### 初始化服务器
+1. 初始化一般属性 initServerConfig()
+2. 载入配置 loadServerConfig()
+3. 初始化数据结构 initServer()
+  创建共享对象
+  信号处理器
+  打开服务器监听端口
+  为serverCron创建时间事件
+  打开aof文件
+  初始化i/o
+redisAsciiArt()
+4. 还原数据库状态 loadDataFromDisk()
+5. 执行事件loop
+
+#### 慢查询日志
+
+slowlog 链表  slowlogEntery结构
+新的在表头
+
+slowlog-log-slower-than
+slowlog-max-len
+
+slowlog get
+
+slowlogCommand
+slowlogPushEntryIfNeeded
+slowlogCreateEntry
+
+#### 监视器
+
+redisServer.monitors
+
