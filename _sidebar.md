@@ -19,6 +19,7 @@
 * 中间件
   * [redis](zh-cn/中间件/redis.md)
   * [redis2](zh-cn/中间件/redis2.md)
+  * [redis3](zh-cn/中间件/redis3.md)
 
 * 工具
     * [网站收集](zh-cn/工具/网站收集.md)

@@ -721,25 +721,6 @@ notify.c
 
 ### Lua
 
-EVAL
-
-
-### SORT实现
-
-### getbit setbit 二进制操作实现
-
-
-## 客户端和服务器的相关
-
-### 事务处理器实现 ae.c
-
-### 单机Redis服务器实现 redis.c
-
-### 其他
-
-* scripting.c	Lua 脚本功能的实现。
-* slowlog.c	慢查询功能的实现。
-* monitor.c	监视器功能的实现。
 
 ## 多机实现
 
@@ -752,6 +733,8 @@ EVAL
 [relication.c](https://github.com/redis/redis/blob/unstable/src/replication.c)
 
 slaveof ip port
+
+replicaof ip port
 
 2.8 salveof
 * sync 主生成rdb文件 缓冲区记录命令, 发给slave
@@ -824,35 +807,7 @@ slaveof ip port
 <!-- tabs:end -->
 
 
-### cluster.c	Redis 集群的实现代码。
 
-
-<!-- tabs:start -->
-
-#### **cluster说明**
-
-[cluseter.c](https://github.com/redis/redis/blob/unstable/src/cluster.c)
-
-* node
-* 重新分片 通过redis-trib
-* 目标节点准备导入槽slot的键值对
-* 源节点准备迁移槽slot的键值对
-*
-* ask 错误
-* moved
-* 多主?
-* 每个节点会记录那些槽位指派给了自己,
-* 检查槽是不是自己负责, 不然返回moved
-
-
-#### **cluster struct**
-
-```c
-
-
-```
-
-<!-- tabs:end -->
 
 
 
@@ -1176,8 +1131,10 @@ redisServer.monitors
 * [公众号redis](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NTE4NDg0NA==&action=getalbum&album_id=1725600385232322562&scene=173&from_msgid=2247483875&from_itemidx=1&count=3&nolastread=1#wechat_redirect)
 * [公众号redis2](https://mp.weixin.qq.com/s?__biz=MzI0NTE4NDg0NA==&mid=2247483875&idx=1&sn=e913d929de18781246616fb704aad892&chksm=e95321c0de24a8d6ce7bdc4fb782a41a5a33cd9794db7ead88de79458c330d0b19fe7fc6bcd1&scene=178&cur_album_id=1725600385232322562#rd)
 * [bookredis设计与实现](http://redisbook.com/)
+* [设计与实现图片集](http://1e-gallery.redisbook.com/index.html)
 * [如何阅读redis源码](https://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html)
 * [redis官网](https://redis.io/docs/about/)
+* [redis命令参考](http://redisdoc.com/string/index.html)
 
 
 
@@ -1220,9 +1177,35 @@ https://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html#
 ### hyperLoglog hyperloglog.c pf开头
 
 
+## 客户端和服务器的相关
+
+### 事务处理器实现 ae.c
+
+### 单机Redis服务器实现 redis.c
+
+### 其他
+
+* scripting.c	Lua 脚本功能的实现。
+* slowlog.c	慢查询功能的实现。
+* monitor.c	监视器功能的实现。
+
+
+
 引用计数 refcount
 共享数据 OBJ_SHARED_INTEGERS
 空转时间lru idletime
 
+
+### 高并发
+
+[高并发理解](https://www.jianshu.com/p/baa792175453)
+1. 并发量
+2. qps
+3. 系统的用户量, 活跃用户量, 平峰,高峰qps,
+4. tps
+5. 方案的副作用 读瓶颈,引入缓存, 缓存命中, 热点key, 数据一致性
+6. 高并发不等于性能优化, 不等于并发编程, 多级缓存,异步化,水平扩容,
+7. 忽视高可用涉及, 服务治理, 运维保障
+8.
 
 
