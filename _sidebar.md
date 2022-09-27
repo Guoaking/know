@@ -18,6 +18,7 @@
     * [Controller-2](zh-cn/K*S/Controller-2.md)
 * 中间件
   * [redis](zh-cn/中间件/redis.md)
+  * [redis2](zh-cn/中间件/redis2.md)
 
 * 工具
     * [网站收集](zh-cn/工具/网站收集.md)

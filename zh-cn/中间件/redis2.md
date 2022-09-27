@@ -15,7 +15,7 @@
 ### 数据库
 <!-- tabs:start -->
 
-#### **说明**
+#### **db 说明**
 
 * redisServer -> redisDB -> dict
 * select 选择数据库
@@ -33,7 +33,7 @@
 * aof 显式记录过期del
 
 
-#### **struct**
+#### **db struct**
 
 ```c
 redis.h->redisDb, db.c
@@ -573,13 +573,13 @@ struct redisServer {
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **notify 说明**
 * notifyKeyspaceEvent
 * keyspace
 * keyevent
 
 
-#### **struct**
+#### **notify struct**
 
 ```c
 notify.c
@@ -593,7 +593,7 @@ notify.c
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **rdb 说明**
 
 * save 阻塞服务器进程
 * bgsave 派生子进程
@@ -607,7 +607,7 @@ notify.c
 * EXPIRETIME ms TYPE(value类型) key value
 
 
-#### **struct**
+#### **rdb struct**
 
 ```c
 
@@ -621,7 +621,7 @@ notify.c
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **aof 说明**
 
 * 保存执行的写命令来记录
 * reidsServer.aof_buf
@@ -636,7 +636,7 @@ notify.c
 * bgrewriteaofCommand aof.c/rewriteAppendOnlyFileBackground
 
 
-#### **struct**
+#### **aof struct**
 
 ```c
 
@@ -652,7 +652,7 @@ notify.c
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **subscribe 说明**
 
 
 * 订阅频道pubsub_channels
@@ -673,7 +673,7 @@ notify.c
 * pubsub numsub
 * pubsub numpat
 
-#### **struct**
+#### **subscribe struct**
 
 ```c
 
@@ -687,7 +687,7 @@ notify.c
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **trx 说明**
 
 * 事务多个命令请求打包,一次性,按顺序执行
 *
@@ -714,7 +714,7 @@ notify.c
 * watch REDIS_DIRTY_CAS 不安全
 
 
-#### **struct**
+#### **trx struct**
 
 ```c
 
@@ -753,7 +753,7 @@ EVAL
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **copy 说明**
 
 slaveof ip port
 
@@ -772,7 +772,7 @@ slaveof ip port
 
 
 
-#### **struct**
+#### **copy  struct**
 
 ```c
 
@@ -788,7 +788,7 @@ slaveof ip port
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **sentinel 说明**
 
 初始化
 1. 初始化服务器
@@ -819,7 +819,7 @@ slaveof ip port
 
 
 
-#### **struct**
+#### **sentienl struct**
 
 ```c
 
@@ -834,7 +834,7 @@ slaveof ip port
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **cluster说明**
 
 * node
 * 重新分片 通过redis-trib
@@ -848,7 +848,7 @@ slaveof ip port
 * 检查槽是不是自己负责, 不然返回moved
 
 
-#### **struct**
+#### **cluster struct**
 
 ```c
 
@@ -864,7 +864,7 @@ slaveof ip port
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **event 说明**
 
 * AE_READABLE
 * AE_WRITEABLE
@@ -873,7 +873,7 @@ slaveof ip port
 * 命令回复处理器 sendReplyToClient
 
 
-#### **struct**
+#### **event struct**
 
 ```c
 
@@ -889,7 +889,7 @@ slaveof ip port
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **time event 说明**
 
 * 全局id, 到达时间when 时间处理器 timeProc
 * 定时事件 AE_NOMORE
@@ -901,7 +901,7 @@ slaveof ip port
 * 时间事件的实际处理时间通常回避设定的到达时间晚一点
 
 
-#### **struct**
+#### **time event struct**
 
 ```c
 
@@ -916,7 +916,7 @@ slaveof ip port
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **client 说明**
 
 * redisClient
 * new Client
@@ -929,7 +929,7 @@ slaveof ip port
 * fd -1(伪客户端)
 
 
-#### **struct**
+#### **client struct**
 
 ```c
 
@@ -1074,7 +1074,7 @@ typedef struct redisClient {
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **server 说明**
 
 
 1. 客户端转换命令成协议格式,发送给服务器
@@ -1096,7 +1096,7 @@ typedef struct redisClient {
 * 处理服务器接受的SIGTREM信号,
 
 
-#### **struct**
+#### ** server struct**
 
 ```c
 
@@ -1111,7 +1111,7 @@ typedef struct redisClient {
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **init server 说明**
 
 1. 初始化一般属性 initServerConfig()
 2. 载入配置 loadServerConfig()
@@ -1128,7 +1128,7 @@ redisAsciiArt()
 
 
 
-#### **struct**
+#### **init server struct**
 
 ```c
 
@@ -1143,7 +1143,7 @@ redisAsciiArt()
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **slowlog 说明**
 
 * slowlog 链表  slowlogEntery结构
 * 新的在表头
@@ -1158,7 +1158,7 @@ redisAsciiArt()
 * slowlogCreateEntry
 
 
-#### **struct**
+#### **slowlog struct**
 
 ```c
 
