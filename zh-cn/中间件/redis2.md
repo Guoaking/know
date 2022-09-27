@@ -1,15 +1,4 @@
 
-### HyperLogLog hyperloglog.c hll
-
-
-### hyperLoglog hyperloglog.c pf开头
-
-
-引用计数 refcount
-共享数据 OBJ_SHARED_INTEGERS
-空转时间lru idletime
-
-
 ## 数据库实现相关
 
 ### 数据库
@@ -35,8 +24,9 @@
 
 #### **db struct**
 
+[server.h](https://github.com/redis/redis/blob/unstable/src/server.h)
+
 ```c
-redis.h->redisDb, db.c
 
 typedef struct redisDb {
 
@@ -55,13 +45,17 @@ typedef struct redisDb {
     // 正在被 WATCH 命令监视的键
     dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */
 
-    struct evictionPoolEntry *eviction_pool;    /* Eviction pool of keys */
-
     // 数据库号码
     int id;                     /* Database ID */
 
     // 数据库的键的平均 TTL ，统计信息
     long long avg_ttl;          /* Average TTL, just for stats */
+
+    // 新版以后没有这个pool
+    // struct evictionPoolEntry *eviction_pool;    /* Eviction pool of keys */
+    unsigned long expires_cursor; /* Cursor of the active expire cycle. */
+    list *defrag_later;         /* List of key names to attempt to defrag one by one, gradually. */
+    clusterSlotToKeyMapping *slots_to_keys; /* Array of slots to keys. Only used in cluster mode (db 0). */
 
 } redisDb;
 
@@ -567,7 +561,6 @@ struct redisServer {
 <!-- tabs:end -->
 
 
-
 ### 数据库通知实现
 
 
@@ -654,7 +647,7 @@ notify.c
 
 #### **subscribe 说明**
 
-
+[pubsub.c](https://github.com/redis/redis/blob/unstable/src/pubsub.c)
 * 订阅频道pubsub_channels
 * subscribe
 * subscribeCommand -> pubsubSubscribeChannel
@@ -689,6 +682,7 @@ notify.c
 
 #### **trx 说明**
 
+[multi.c](https://github.com/redis/redis/blob/unstable/src/multi.c)
 * 事务多个命令请求打包,一次性,按顺序执行
 *
 * 事务开始 multiCommand()
@@ -755,6 +749,8 @@ EVAL
 
 #### **copy 说明**
 
+[relication.c](https://github.com/redis/redis/blob/unstable/src/replication.c)
+
 slaveof ip port
 
 2.8 salveof
@@ -782,14 +778,13 @@ slaveof ip port
 <!-- tabs:end -->
 
 
-
-### replication.c	复制功能的实现代码。
 ### sentinel.c	Redis Sentinel 的实现代码。
 
 <!-- tabs:start -->
 
 #### **sentinel 说明**
 
+[sentinel.c](https://github.com/redis/redis/blob/unstable/src/sentinel.c)
 初始化
 1. 初始化服务器
    1. 不使用数据库方面的命令, 事务命令, 持久化命令
@@ -835,6 +830,8 @@ slaveof ip port
 <!-- tabs:start -->
 
 #### **cluster说明**
+
+[cluseter.c](https://github.com/redis/redis/blob/unstable/src/cluster.c)
 
 * node
 * 重新分片 通过redis-trib
@@ -1214,5 +1211,18 @@ distribution默认支持有三种:
 
 
 https://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html#
+
+
+
+### HyperLogLog hyperloglog.c hll
+
+
+### hyperLoglog hyperloglog.c pf开头
+
+
+引用计数 refcount
+共享数据 OBJ_SHARED_INTEGERS
+空转时间lru idletime
+
 
 
