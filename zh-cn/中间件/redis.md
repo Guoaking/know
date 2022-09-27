@@ -16,6 +16,7 @@
 
 #### **sdshdr**
 
+[sds.h](https://github.com/redis/redis/blob/unstable/src/sds.h)
 ```c
 src/sds.h
 struct sdshdr {
@@ -45,6 +46,7 @@ struct sdshdr {
 
 #### **adlist**
 
+[adlist.h](https://github.com/redis/redis/blob/unstable/src/adlist.h)
 ```c
 /*
  * 双端链表节点
@@ -105,8 +107,9 @@ typedef struct list {
 
 #### **dict struct**
 
+[dict.h](https://github.com/redis/redis/blob/unstable/src/dict.h)
+
 ```c
-dict.c
 /*
  * 哈希表节点
  */
@@ -174,7 +177,33 @@ typedef struct dict {
 
 ```
 
+#### **dict new struct**
+
+[dict.h](https://github.com/redis/redis/blob/unstable/src/dict.h)
+
+```c
+
+struct dictht 消失
+
+struct dict {
+    dictType *type;
+
+    dictEntry **ht_table[2];
+    unsigned long ht_used[2];
+
+    long rehashidx; /* rehashing not in progress if rehashidx == -1 */
+
+    /* Keep small vars at end for optimal (minimal) struct padding */
+    int16_t pauserehash; /* If >0 rehashing is paused (<0 indicates coding error) */
+    signed char ht_size_exp[2]; /* exponent of size. (size = 1<<exp) */
+};
+
+```
+
 <!-- tabs:end -->
+
+
+
 
 
 ### 跳跃表实现
@@ -187,15 +216,17 @@ zset使用, 集群节点中用作内部数据结构
 
 #### **zskiplist struct**
 
+[server.h](https://github.com/redis/redis/blob/unstable/src/server.h)
+
 ```c
-redis.h
 
 /*
  * 跳跃表节点
  */
 typedef struct zskiplistNode {
 
-    // 成员对象
+    //成员对象 new version replace robj
+    sds ele;
     robj *obj;
 
     // 分值
@@ -233,13 +264,20 @@ typedef struct zskiplist {
 
 } zskiplist;
 
+
+// ZSETs use a specialized version of Skiplists
+typedef struct zset {
+    dict *dict;
+    zskiplist *zsl;
+} zset;
+
 ```
+
 
 <!-- tabs:end -->
 
 
 ## 内存编码数据结构实现
-
 
 
 ### 整数集合
@@ -257,8 +295,10 @@ typedef struct zskiplist {
 
 #### **intset struct**
 
+[intset.h](https://github.com/redis/redis/blob/unstable/src/intset.h)
+[intset.c](https://github.com/redis/redis/blob/unstable/src/intset.c)
+
 ```c
-intset.h intset.c
 typedef struct intset {
 
     // 编码方式
@@ -347,8 +387,10 @@ REDIS_ZSET	| REDIS_ENCODING_SKIPLIST	|使用跳跃表和字典实现的有序集
 
 #### **obj struct**
 
+最新地址
+[server.h](https://github.com/redis/redis/blob/unstable/src/server.h)
+
 ```c
-redis.h
 /*
  * Redis 对象
  */
@@ -397,13 +439,6 @@ typedef struct redisObject {
 
 ```
 
-<!-- tabs:end -->
-
-### 字符串键实现
-
-
-<!-- tabs:start -->
-
 #### **sdsobj说明**
 
 * 编码 ENCODING_INT|RAW
@@ -411,89 +446,33 @@ typedef struct redisObject {
 * row  2次
 * int 存成str 可以append
 * 44字节 再往后类型会变 embstr->row
-
-
-#### **sdsobj struct**
-
-```c
-t_string.c
-
-```
-
-<!-- tabs:end -->
-
-
-### 列表键实现
-<!-- tabs:start -->
+* t_string.c
 
 #### **list 说明**
 
 ziplist和linkedlist
 quicklist?
-
-#### **list struct**
-
-```c
-
 t_list.c
-
-```
-
-<!-- tabs:end -->
-
-
-
-### 散列键
-<!-- tabs:start -->
 
 #### **hash 说明**
 编码转换 ziplist->hashtable
-
-#### **hash struct**
-
-```c
 t_hash.c
-
-```
-
-<!-- tabs:end -->
-
-
-### 集合键
-<!-- tabs:start -->
 
 #### **set 说明**
 intset hashtable
 纯数字不超过512 就是intset
-
-#### **set struct**
-
-```c
 t_set.c
-
-```
-
-<!-- tabs:end -->
-
-
-
-### 有序集合
-<!-- tabs:start -->
 
 #### **zset 说明**
 
 * skiplist -> zset (zskiplist,dict)
 * ziplist 数量小于128&&所有元素成员长度小于64字节
+* t_zset.c 排除zsl的
 
-#### **zset struct**
-
-```c
-
-t_zset.c 排除zsl的
-
-```
 
 <!-- tabs:end -->
+
+
 
 
 
