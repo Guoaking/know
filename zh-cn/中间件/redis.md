@@ -238,6 +238,263 @@ typedef struct zskiplist {
 <!-- tabs:end -->
 
 
+## 内存编码数据结构实现
+
+
+
+### 整数集合
+
+<!-- tabs:start -->
+
+#### **intset说明**
+
+* set add
+* ojbect encoding key
+* 会做类型升级 不支持降级
+* * 灵活各种数据类型都能放
+* 有需要时才升级节约内存
+
+
+#### **intset struct**
+
+```c
+intset.h intset.c
+typedef struct intset {
+
+    // 编码方式
+    uint32_t encoding;
+
+    // 集合包含的元素数量
+    uint32_t length;
+
+    // 保存元素的数组
+    int8_t contents[];
+
+} intset;
+
+```
+
+<!-- tabs:end -->
+
+### 压缩列表
+
+<!-- tabs:start -->
+
+#### **ziplist说明**
+
+为了解压内存, 包含多个节点, 每个节点可以保存一个字节数组或者整数, 可能引发连锁更新操作, 概率不高
+* hash
+* list
+*
+#### **ziplist struct**
+
+```c
+
+ziplist.c
+
+/*
+ * 保存 ziplist 节点信息的结构
+ */
+typedef struct zlentry {
+
+    // prevrawlen ：前置节点的长度
+    // prevrawlensize ：编码 prevrawlen 所需的字节大小
+    unsigned int prevrawlensize, prevrawlen;
+
+    // len ：当前节点值的长度
+    // lensize ：编码 len 所需的字节大小
+    unsigned int lensize, len;
+
+    // 当前节点 header 的大小
+    // 等于 prevrawlensize + lensize
+    unsigned int headersize;
+
+    // 当前节点值所使用的编码类型
+    unsigned char encoding;
+
+    // 指向当前节点的指针
+    unsigned char *p;
+
+} zlentry;
+
+```
+
+<!-- tabs:end -->
+
+
+## 对象
+
+### redisobject
+
+<!-- tabs:start -->
+
+#### **obj说明**
+
+类型| 编码| 对象
+--|--|--
+REDIS_STRING| 	REDIS_ENCODING_INT	|使用整数值实现的字符串对象。
+REDIS_STRING| 	REDIS_ENCODING_EMBSTR	|使用 embstr 编码的简单动态字符串实现的字符串对象。
+REDIS_STRING| 	REDIS_ENCODING_RAW	|使用简单动态字符串实现的字符串对象。
+REDIS_LIST	| REDIS_ENCODING_ZIPLIST	|使用压缩列表实现的列表对象。
+REDIS_LIST	| REDIS_ENCODING_LINKEDLIST	|使用双端链表实现的列表对象。
+REDIS_HASH	| REDIS_ENCODING_ZIPLIST	|使用压缩列表实现的哈希对象。
+REDIS_HASH	| REDIS_ENCODING_HT	|使用字典实现的哈希对象。
+REDIS_SET	| REDIS_ENCODING_INTSET	|使用整数集合实现的集合对象。
+REDIS_SET	| REDIS_ENCODING_HT	|使用字典实现的集合对象。
+REDIS_ZSET	| REDIS_ENCODING_ZIPLIST	|使用压缩列表实现的有序集合对象。
+REDIS_ZSET	| REDIS_ENCODING_SKIPLIST	|使用跳跃表和字典实现的有序集合对象。
+
+
+#### **obj struct**
+
+```c
+redis.h
+/*
+ * Redis 对象
+ */
+#define REDIS_LRU_BITS 24
+#define REDIS_LRU_CLOCK_MAX ((1<<REDIS_LRU_BITS)-1) /* Max value of obj->lru */
+#define REDIS_LRU_CLOCK_RESOLUTION 1000 /* LRU clock resolution in ms */
+typedef struct redisObject {
+
+    // 类型
+    unsigned type:4;
+
+    // 编码
+    unsigned encoding:4;  // 指定底层数据结构
+
+    // 对象最后一次被访问的时间
+    unsigned lru:REDIS_LRU_BITS; /* lru time (relative to server.lruclock) */
+
+    // 引用计数
+    int refcount;
+
+    // 指向实际值的指针
+    void *ptr;
+
+} robj;
+
+
+// 对象类型
+#define REDIS_STRING 0
+#define REDIS_LIST 1
+#define REDIS_SET 2
+#define REDIS_ZSET 3
+#define REDIS_HASH 4
+
+
+// 对象编码
+#define REDIS_ENCODING_RAW 0     /* Raw representation */
+#define REDIS_ENCODING_INT 1     /* Encoded as integer */
+#define REDIS_ENCODING_HT 2      /* Encoded as hash table */
+#define REDIS_ENCODING_ZIPMAP 3  /* Encoded as zipmap */
+#define REDIS_ENCODING_LINKEDLIST 4 /* Encoded as regular linked list */
+#define REDIS_ENCODING_ZIPLIST 5 /* Encoded as ziplist */
+#define REDIS_ENCODING_INTSET 6  /* Encoded as intset */
+#define REDIS_ENCODING_SKIPLIST 7  /* Encoded as skiplist */
+#define REDIS_ENCODING_EMBSTR 8  /* Embedded sds string encoding */
+
+
+```
+
+<!-- tabs:end -->
+
+### 字符串键实现
+
+
+<!-- tabs:start -->
+
+#### **sdsobj说明**
+
+* 编码 ENCODING_INT|RAW
+* embstr 一次内存直接减rdsojbect sds
+* row  2次
+* int 存成str 可以append
+* 44字节 再往后类型会变 embstr->row
+
+
+#### **sdsobj struct**
+
+```c
+t_string.c
+
+```
+
+<!-- tabs:end -->
+
+
+### 列表键实现
+<!-- tabs:start -->
+
+#### **list 说明**
+
+ziplist和linkedlist
+quicklist?
+
+#### **list struct**
+
+```c
+
+t_list.c
+
+```
+
+<!-- tabs:end -->
+
+
+
+### 散列键
+<!-- tabs:start -->
+
+#### **hash 说明**
+编码转换 ziplist->hashtable
+
+#### **hash struct**
+
+```c
+t_hash.c
+
+```
+
+<!-- tabs:end -->
+
+
+### 集合键
+<!-- tabs:start -->
+
+#### **set 说明**
+intset hashtable
+纯数字不超过512 就是intset
+
+#### **set struct**
+
+```c
+t_set.c
+
+```
+
+<!-- tabs:end -->
+
+
+
+### 有序集合
+<!-- tabs:start -->
+
+#### **zset 说明**
+
+* skiplist -> zset (zskiplist,dict)
+* ziplist 数量小于128&&所有元素成员长度小于64字节
+
+#### **zset struct**
+
+```c
+
+t_zset.c 排除zsl的
+
+```
+
+<!-- tabs:end -->
+
 
 
 
