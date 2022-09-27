@@ -4,7 +4,7 @@
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **sds说明**
 
 1. 需要一个可以随时被修改的字符串
 
@@ -98,12 +98,12 @@ typedef struct list {
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **dict说明**
 
 * dict->dictEntry[2], 另一个在渐进式rehash使用
 
 
-#### **struct**
+#### **dict struct**
 
 ```c
 dict.c
@@ -181,11 +181,11 @@ typedef struct dict {
 
 <!-- tabs:start -->
 
-#### **说明**
+#### **zskiplist说明**
 
 zset使用, 集群节点中用作内部数据结构
 
-#### **struct**
+#### **zskiplist struct**
 
 ```c
 redis.h
