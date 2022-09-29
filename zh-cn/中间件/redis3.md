@@ -53,8 +53,8 @@ main -> initServer
 9. clusterAddSlot() 遍历所有槽是否未指派, 遍历处理所有槽
 10. 所有槽分片完毕 cluster_state=ok 上线状态
 
-[img](../../static/img/redis/17-14.png)
 
+![Alt](../../static/img/redis/17-14.png)
 
 set msg "happy new year"
 1. setCommand -> setGenericCommand -> setKey -> dbAdd -> slotToKeyAdd -> keyHashSlot
@@ -280,3 +280,96 @@ typedef struct clusterState {
 
 <!-- tabs:end -->
 
+
+select
+1024 bitmap
+fdset 不可重用
+用户到内核切换有一个开销
+再次遍历o(n)
+
+poll
+
+pollfd {
+    fd   监听的fd
+    event 监听的事件
+    revents 就绪的事件
+}
+
+阻塞函数 poll(pollfds, 5, 50000)
+有事件就置位revents -> 1
+
+可以超过1024
+置位revents
+有开销
+再次遍历
+
+epoll
+
+epfd 内核维护的一个红黑树
+epoll_create() 创建白板epfd
+epoll_ctl(epfd) // 配置白板 这里可能已经在内核
+fd
+events
+epoll_event
+
+epoll_wait(epfd)  排序 到前面都是有事件的
+epfd:内核和用户共享内存的效果
+_put_user进行内核跟用户虚拟空间交换
+
+socket 出入口
+fd 一切接文件, 一切资源 , 文件的索引和符号
+
+学生举手 确认有学生做完 但是要遍历
+知道谁举手
+
+同步非阻塞-> accept 不阻塞
+select 阻塞 遍历到数据就绪 就从内核态返回
+用户态去遍历看那个就绪了
+没有就绪就阻塞, 接受cpu中断
+fdset 位图0 1
+检查逻辑下沉到内核空间
+进程监听的fd有限制 1024
+监听 要拷贝切换 空间
+遍历全部文件 o(n)
+fd_set 需要重置
+
+poll
+数据结构优化, 不用重置监听时间
+底层使用链表 可以超过1024
+
+
+pollfd{
+    fd //j
+}
+
+epoll
+
+内核切换 开销
+那个fd事件就绪 需要o(n) 遍历
+
+int epoll_create(10)
+epoll_ctl() 事件也放进去
+epoll_wait(epfd,events(回传就绪事件),最大事件数)
+
+
+epitem {
+    rbn  关联红黑树
+    ffd 关联就绪列表
+    ep  eventpoll对象
+    pwqlist  等待队列 通过ep_poll_callback唤醒
+}
+eventpoll{
+    wq 等待队列
+    rdllist就绪列表 如果是null 就添加到等待队列, 让出cpu
+    rbr 红黑树
+}
+
+socket -> ep_poll_callback -> socket放到就绪队列去
+唤醒等待进程, 看到就绪事件-> 返回用户空间 -> 用户处理
+
+只支持linux
+select 更轻量
+监听连接数少 select更好
+
+LT level triggered 水平  要检查 每次返回, 直到处理完成
+ET edge-triggered 边缘触发 只会返回一次, 性能好
