@@ -36,19 +36,21 @@ Apache Lucene| 开源搜索库|
 
 term: 关键字
 分词: 将text分割成多个term的过程
+![alt](../../static/img/es/Lncene写入.png)
 postings list: 关键词对应的文档列表
     存储一个term对应的文档列表, postings list用到了FrameOfReference压缩技术来节省磁盘空间 分为增量编码, block分区. 位包装3部分
     * 增量编码: 将每个id转化为相对前一个id的增量值, [73, 300, 302, 332, 343, 372] -> [73, 227, 2, 30, 11, 29] 好处是?
     * block划分: 按每个block3个元素划分, [73, 227, 2, 30, 11, 29]
     * 位包装: 动态计算bits  为啥227是8bits? 30是bits? 节省空间吧   4byte 8bits ^6 24bits
-    * img/list
+    ![alt](../../static/img/es/postingslist.png)
 term dictionary 词典, 保存term的有序列表, 可进行二分查找
     存储term数据, 同时他也是term与postings list的关系纽带, 存储了每个term和其对应的postings list文件位置指针
     .tim后缀存储, 内部采用NodeBlock对Term进行压缩前缀存储, 处理过程会将相同前缀的term压缩为一个NodeBlock, NodeBlock会存储公共前缀, 然后将每个term的后缀以及对应term的
-    img/nodeblock
+    ![alt](../../static/img/es/nodeBlock.png)
     postings list 关联信息处理为一个Entry 保存对Block
 term index: 对term dictionary的索引, 索引指向一个block, 里面存储了一些term dictionary片段, 二分这些片段
     使用FST(有限状态转移机)实现, FST基于前缀树(trie), 具有空间占用小, 查询速度快, 对模糊搜索支持好等优点. FST不但能共享前缀还能共享后缀, 大小可能只有term尺寸的几十分之一, 使得内存缓存整个term index成可能
+
 
 
 StoreField
@@ -93,6 +95,7 @@ img/es
 * 段合并
   * 由于每个refresh周期都会产生新的segment, 每一个segment都会消耗文件句柄, 内存和cpu运行周期, 搜索时需要轮询检查每个segment O(n)
   * 后台通过段合并来解决问题, 将小的segemnt合并到大segment, 段合并时会将在新的segment中将已存在.del文件中标记删除的文档清除
+  ![alt](../../static/img/es/段合并.png)
 
 ### 写入流程
 * lucene 写入
@@ -115,6 +118,7 @@ img/es
   * get: 先查询内存中的tanslog, 没找到再去磁盘的tanslog, 再去segment, 实时查询, 保证数据写入后可查
 * 两阶段查询
   * query_then_fetch 查docid 再查完整文档
+  ![alt](../../static/img/es/get_search.jpeg)
 
 ### 分布式
 * 选举
@@ -128,6 +132,7 @@ img/es
     * 2. 如果Candidate收到足够的投票, 则转换为Leader
     * 3. 当一个Leader收到RequestVote, 或者发现了更高的term, 则辞去Leader, 切换为Candidate
     * 4. Leader不能直接变成Follower, 他需要先切换到Candidate
+![alt](../../static/img/es/vote流程.png)
 * Sequence IDs
   * PrimaryTerms和: 由master节点分配, 当一个主分片被提升时, primary terms递增, 然后持久化到集群状态中, 从而表示集群主分片所处的一个版本. 有了PrimaryTerms, 来自就的主分片的迟到的操作就可以被检测然后拒绝, 避免混乱的情况
   * SequenceNumbers: 标记发生在某个分片上的写操作, 由主分片分配, 只对写操作分配, 使我们能够理解发生在主分片节点上的索引操作的特定顺序

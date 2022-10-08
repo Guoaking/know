@@ -3,7 +3,7 @@
 <!-- s -->
 * [首页](/zh-cn/)
 <!-- * [指南](zh-cn/guide) -->
-* [记录](zh-cn/公司记录/1.md)
+<!-- * [记录](zh-cn/公司记录/1.md) -->
 
 * 设计模式
 
@@ -20,6 +20,11 @@
   * [redis](zh-cn/中间件/redis.md)
   * [redis2](zh-cn/中间件/redis2.md)
   * [redis3](zh-cn/中间件/redis3.md)
+  * [es](zh-cn/中间件/es.md)
+  * [etcd](zh-cn/中间件/etcd.md)
+  * [influxdb](zh-cn/中间件/influxdb.md)
+  * [nginx](zh-cn/中间件/nginx.md)
+  * [rocketmq](zh-cn/中间件/mq.md)
 
 * [linux](zh-cn/linux/linux1.md)
 
