@@ -54,7 +54,7 @@ main -> initServer
 10. 所有槽分片完毕 cluster_state=ok 上线状态
 
 
-![Alt](../../static/img/redis/17-14.png)
+![](../../static/img/redis/17-14.png)
 
 set msg "happy new year"
 1. setCommand -> setGenericCommand -> setKey -> dbAdd -> slotToKeyAdd -> keyHashSlot
