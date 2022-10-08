@@ -1,3 +1,10 @@
+## 单机大致流程
+
+![clusterState结构的slots数组](../../static/img/redis/redis.png)
+
+## getmsg 大致流程
+
+![clusterState结构的slots数组](../../static/img/redis/getmsg.png)
 
 ## 数据库实现相关
 

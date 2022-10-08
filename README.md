@@ -67,9 +67,6 @@ Markdown将文本转换为 HTML。
 
 
 
-```pdf
-static/pdf/nginx.pdf
-```
 
 
 https://gbodigital.github.io/docsify-gifcontrol/#/

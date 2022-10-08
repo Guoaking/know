@@ -54,9 +54,11 @@ main -> initServer
 10. 所有槽分片完毕 cluster_state=ok 上线状态
 
 
-![](../../static/img/redis/17-14.png)
+![clusterState结构的slots数组](../../static/img/redis/17-14.png)
 
-set msg "happy new year"
+
+
+
 1. setCommand -> setGenericCommand -> setKey -> dbAdd -> slotToKeyAdd -> keyHashSlot
 2. setKey 计算不应该设置在当前node 返回redirected to slot 在哪里? getNodeByQuery
 3. 服务端发消息在哪? repl -> cliSendCommand -> cliReadReply - > redirected
