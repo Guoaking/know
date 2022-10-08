@@ -29,6 +29,7 @@
     2.  陷阱门描述符
     3.  任务门描述符
 
+```
 地址变换: 减少确定地址变换需要的信息
 分段机制: 隔绝代码, 数据和堆栈区,使用大小可变的块处理复杂系统的逻辑分区, 多段模型
 把虚拟地址空间中的虚拟内存组织成一些长度可变称为段的内存块单元. 逻辑地址转换成线性地址
@@ -65,6 +66,7 @@ CPU的线性地址: 虚拟地址到物理地址变换之间的中间层,处理�
 system head.s 为啥一开始在64kb处后来放在0kb处
 boot启动时setup.s还需要boot的中断调用功能来获取有关机器配置的一些参数(显示卡模式, 硬盘参数表等)
 在1KB处放的中断向量表,在使用完boot的中断向量表后才能擦除覆盖
+```
 
 <!-- tabs:start -->
 
@@ -150,6 +152,8 @@ inode: 磁盘索引节点在内存中的体现
 内存描述符: 表示进程的地址空间,每一个进程都有唯一的结构体,唯一的进程地址空间,每个进程使用的内存
 虚拟地址的返回, 有时会超过实际物理内存大小
 
+#### **mm_struct**
+
 ```c
 struct mm_struct {
     struct vm_area_struct * mmap;        /* [内存区域]链表 包含完全相同的vm_area_struct */
@@ -233,6 +237,7 @@ struct mm_struct {
 
 进程描述符:  任务(进程)数据结构
 
+#### **task_struct**
 
 ```c
 struct task_struct {
@@ -582,8 +587,6 @@ struct task_struct {
 
 
 
-
-
 <!-- tabs:start -->
 
 #### **虚拟内存区域**
@@ -679,6 +682,9 @@ TLB(translate lookaside buffer): 翻译后缓冲器, 将虚拟地址映射到物
 线程(Thread): 进程中活动的对象, 独立的计数器, 进程栈, 进程寄存器, 内核调度对象, 特殊的进程
 /proc/sys/kernel/pid_max 提高进程上限
 
+
+#### **thread_info**
+
 ```c
 struct thread_info {
 	struct task_struct	*task;		// 该进程实际的task指针 /* main task structure */
@@ -712,8 +718,6 @@ sys_clone -> do_fork
 索引节点对象: inode, create(), link() 内核在操作文件或目录时需要的全部信息 代表一个文件, 设备或者管道这样的特殊文件
 目录项对象: dentry, d_compare(), d_delete()
 文件对象:file, read(), write()
-
-
 
 
 
