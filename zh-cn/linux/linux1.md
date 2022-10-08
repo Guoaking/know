@@ -1,5 +1,5 @@
 
-## 组成
+## 基本概念
 * 北桥(MCH): 与cpu, 内存和AGP视频接口, 存储控制器,有很高的传输速率,
 * 南桥(ICH): PCI总线,IDE硬盘接口, USB端口,外设
 
@@ -66,7 +66,16 @@ system head.s 为啥一开始在64kb处后来放在0kb处
 boot启动时setup.s还需要boot的中断调用功能来获取有关机器配置的一些参数(显示卡模式, 硬盘参数表等)
 在1KB处放的中断向量表,在使用完boot的中断向量表后才能擦除覆盖
 
-内存管理单元(MMU,): 管理内存并把虚拟地址转换为物理地址的硬件
+<!-- tabs:start -->
+
+#### **内存管理单元(MMU)**
+
+管理内存并把虚拟地址转换为物理地址的硬件
+
+// 分配物理页,返回第一个页
+gfp.h/static inline struct page *alloc_pages(gfp_t gfp_mask, unsigned int order)
+// 对于4GB的物理内存 每个一个物理页分配这样一个结构体占用多少内存?
+4GB*1024*1024/8KB(系统物理页8KB大小)*40B/1024/1024~20MB
 
 
 ```c
@@ -87,11 +96,11 @@ struct zone{
     const char  *name;      // NULL结束的字符串 表示zone的名字 DMA, Normal, HighMem
 }
 
-// 分配物理页,返回第一个页
-gfp.h/static inline struct page *alloc_pages(gfp_t gfp_mask, unsigned int order)
-// 对于4GB的物理内存 每个一个物理页分配这样一个结构体占用多少内存?
-4GB*1024*1024/8KB(系统物理页8KB大小)*40B/1024/1024~20MB
+
 ```
+
+<!-- tabs:end -->
+
 
 区: 逻辑分组, 硬件限制,内核不能对所有页一视同仁
 * ZONE_DMA 可以直接执行DMA操作
@@ -105,9 +114,15 @@ gfp_mask 分配器标志
 * 区修饰符: 到底从这些区中的哪一区中进行分配, 优先是normal
 * 类型:组合了行为和区,简化修饰符使用
 
-slab分配器:通用数据结构缓存层 空闲链表
+
+<!-- tabs:start -->
+
+#### **slab分配器**
+
+* 通用数据结构缓存层 空闲链表
 * 频繁使用的数据结构也会频繁分配和释放,应当缓存
 * 高速缓存组,slab由一个或多个物流号连续的页最成
+
 
 ```c
 struct slab {
@@ -120,13 +135,20 @@ struct slab {
 };
 ```
 
+<!-- tabs:end -->
+
+
 inode: 磁盘索引节点在内存中的体现
 进程地址空间: 用户空间中进程的内存
 
 
+
+<!-- tabs:start -->
+
+#### **内存描述符**
+
 内存描述符: 表示进程的地址空间,每一个进程都有唯一的结构体,唯一的进程地址空间,每个进程使用的内存
 虚拟地址的返回, 有时会超过实际物理内存大小
-
 
 ```c
 struct mm_struct {
@@ -200,7 +222,17 @@ struct mm_struct {
 
 ```
 
+<!-- tabs:end -->
+
+
+
+
+<!-- tabs:start -->
+
+#### **进程描述符**
+
 进程描述符:  任务(进程)数据结构
+
 
 ```c
 struct task_struct {
@@ -545,6 +577,17 @@ struct task_struct {
 };
 ```
 
+
+<!-- tabs:end -->
+
+
+
+
+
+<!-- tabs:start -->
+
+#### **虚拟内存区域**
+
 虚拟内存区域(VMA): 表示进程地址空间中的内存区域 进程能够访问, 其他地方报段错误
 * 代码段(text section), 可执行文件代码的内存映射
 * 数据段(ds), 可执行文件的已初始化全局标量的内存映射
@@ -555,6 +598,7 @@ struct task_struct {
 * 任何共享内存段
 * 任何匿名内存映射, malloc()分配的内存
 
+#### **VMA 结构**
 ```c
 struct vm_area_struct {
     struct mm_struct * vm_mm;    /* 指向和VMA 相关的 mm_struct 结构体 */
@@ -612,6 +656,8 @@ struct vm_area_struct {
 };
 ```
 
+<!-- tabs:end -->
+
 
 页表: 3级页表完成地址转换, 捷俊地址转换占用的存放空间
 顶级页表(PGD)
@@ -622,10 +668,17 @@ struct vm_area_struct {
 TLB(translate lookaside buffer): 翻译后缓冲器, 将虚拟地址映射到物理地址的硬件缓存
 
 
+
+
+<!-- tabs:start -->
+
+#### **线程**
+
 进程 (任务):处于执行期的程序,打开的文件,挂起的信号, 内核内部数据, 处理器状态, 线程等
 任务队列: 存放进程的列表,是双向循环链表, 每一项是task_struct(进程描述符,32位约1.7KB)
 线程(Thread): 进程中活动的对象, 独立的计数器, 进程栈, 进程寄存器, 内核调度对象, 特殊的进程
 /proc/sys/kernel/pid_max 提高进程上限
+
 ```c
 struct thread_info {
 	struct task_struct	*task;		// 该进程实际的task指针 /* main task structure */
@@ -648,6 +701,9 @@ struct thread_info {
 };
 ```
 
+
+<!-- tabs:end -->
+
 sys_clone -> do_fork
 
 
@@ -657,6 +713,13 @@ sys_clone -> do_fork
 目录项对象: dentry, d_compare(), d_delete()
 文件对象:file, read(), write()
 
+
+
+
+
+<!-- tabs:start -->
+
+#### **页高速缓存和页回写**
 
 目录项缓存(Dcache): 遍历元素解析成目录项对象, 费力
 被使用的: 通过inode-> i_dentry 链接相关的索引节点
@@ -674,6 +737,8 @@ sys_clone -> do_fork
 1. 空闲内存低于一个阈值: 需要释放内存
 2. 脏页主流时间到达一个阈值: 确保不会无限期停留
 3. 用户进程调用sync()和fsync()
+
+#### **页缓存**
 
 ```c
 // 页缓存struct
@@ -697,6 +762,10 @@ struct address_space {
 } __attribute__((aligned(sizeof(long))));
 
 ```
+
+
+<!-- tabs:end -->
+
 
 临界区: 访问和操作共享数据的代码段ds
 竞争条件: 2个执行线程有可能处于同一个临界区中同时执行
