@@ -2,8 +2,6 @@
 
 <!-- s -->
 * [首页](/zh-cn/)
-<!-- * [指南](zh-cn/guide) -->
-<!-- * [记录](zh-cn/公司记录/1.md) -->
 
 * 设计模式
 
@@ -40,3 +38,9 @@
     * [排序](zh-cn/数据结构/排序.md)
     * [其他](zh-cn/数据结构/1.md)
 *  [其他123](/zh-cn/涨知识/sql/001.md)
+
+* 涨知识
+  * [ddd](zh-cn/涨知识/ddd.md)
+  * [http](zh-cn/涨知识/http.md)
+  * [tcp](zh-cn/涨知识/tcp.md)
+  * [mysql_install](zh-cn/涨知识/mysql安装.md)
