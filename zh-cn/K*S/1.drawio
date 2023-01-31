@@ -1,0 +1,268 @@
+<mxfile host="65bd71144e">
+    <diagram id="_iDABE_1NdMFy9_PuymS" name="第 1 页">
+        <mxGraphModel dx="1653" dy="847" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="2" target="3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="至少一个容器运行" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4">
+                    <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="Pending" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="210" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="3" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="所有容器正常退出job" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="6">
+                    <mxGeometry x="-0.15" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3" value="Running" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="210" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="460"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="40" value="容器被终止, 非0 退出, 被系统停止" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="8">
+                    <mxGeometry x="0.28" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="35">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Succeeded" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="490" y="210" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="7" target="3">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="280" y="340" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="39" value="容器重启以后" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="38">
+                    <mxGeometry x="0.02" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="Failed" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="410" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Unknown" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="360" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="写数据到etcd&lt;br&gt;调度&lt;br&gt;pull 镜像,&lt;br&gt;启动容器&lt;br&gt;Added&lt;br&gt;Modified" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=left;pointerEvents=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="110" width="130" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="无法获得pod状态&lt;br&gt;通常是与pod的主机通信错误" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=left;pointerEvents=1;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="590" width="160" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="18" target="19">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="PodScheduled&lt;br&gt;调度中" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="7.5" y="745" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="19" target="21">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Ready&lt;br&gt;pod中的容器可以提供服务了" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="187.5" y="745" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="21" target="23">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Initalized&lt;br&gt;初始化容器已经初启动完毕" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="367.5" y="745" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Unschedulable&lt;br&gt;不能调度,没有合适的节点" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="547.5" y="745" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;span style=&quot;color: rgb(204 , 204 , 204) ; font-family: &amp;#34;source code pro&amp;#34; , &amp;#34;dejavu sans mono&amp;#34; , &amp;#34;ubuntu mono&amp;#34; , &amp;#34;anonymous pro&amp;#34; , &amp;#34;droid sans mono&amp;#34; , &amp;#34;menlo&amp;#34; , &amp;#34;monaco&amp;#34; , &amp;#34;consolas&amp;#34; , &amp;#34;inconsolata&amp;#34; , &amp;#34;courier&amp;#34; , monospace , &amp;#34;pingfang sc&amp;#34; , &amp;#34;microsoft yahei&amp;#34; , sans-serif ; font-size: 14px ; background-color: rgb(45 , 45 , 45)&quot;&gt;PodConditionType&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="-27.5" y="710" width="150" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&lt;span style=&quot;color: rgb(204 , 204 , 204) ; font-family: &amp;#34;source code pro&amp;#34; , &amp;#34;dejavu sans mono&amp;#34; , &amp;#34;ubuntu mono&amp;#34; , &amp;#34;anonymous pro&amp;#34; , &amp;#34;droid sans mono&amp;#34; , &amp;#34;menlo&amp;#34; , &amp;#34;monaco&amp;#34; , &amp;#34;consolas&amp;#34; , &amp;#34;inconsolata&amp;#34; , &amp;#34;courier&amp;#34; , monospace , &amp;#34;pingfang sc&amp;#34; , &amp;#34;microsoft yahei&amp;#34; , sans-serif ; font-size: 14px ; background-color: rgb(45 , 45 , 45)&quot;&gt;PodPhase&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="-10" y="160" width="80" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="1. 写入数据到etcd&lt;br&gt;2. 开始被调度 , 还未到node上&lt;br&gt;3. 调度到具体的node上, 创建容器&lt;br&gt;4. 容器创建成功Ready=true 容器为running, podPhase running" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="-95" y="590" width="350" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;span style=&quot;color: rgb(204 , 204 , 204) ; font-family: &amp;#34;source code pro&amp;#34; , &amp;#34;dejavu sans mono&amp;#34; , &amp;#34;ubuntu mono&amp;#34; , &amp;#34;anonymous pro&amp;#34; , &amp;#34;droid sans mono&amp;#34; , &amp;#34;menlo&amp;#34; , &amp;#34;monaco&amp;#34; , &amp;#34;consolas&amp;#34; , &amp;#34;inconsolata&amp;#34; , &amp;#34;courier&amp;#34; , monospace , &amp;#34;pingfang sc&amp;#34; , &amp;#34;microsoft yahei&amp;#34; , sans-serif ; font-size: 14px ; background-color: rgb(45 , 45 , 45)&quot;&gt;ContainerCreating&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="167.5" y="710" width="160" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="29" target="2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="被k8s调度" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="30">
+                    <mxGeometry x="-0.175" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="-195" y="210" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="640" y="210" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="41" target="42">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="7.5" y="960" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="42" target="44">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="wating" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="187.5" y="960" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="44" target="46">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="running" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="367.5" y="960" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="46" target="48">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="&lt;div style=&quot;background-color: rgb(255 , 255 , 255) ; font-family: &amp;#34;menlo&amp;#34; , &amp;#34;monaco&amp;#34; , &amp;#34;courier new&amp;#34; , monospace ; font-size: 14px ; line-height: 21px&quot;&gt;Terminated&lt;/div&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="547.5" y="960" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="&lt;div style=&quot;background-color: rgb(255 , 255 , 255) ; font-family: &amp;#34;menlo&amp;#34; , &amp;#34;monaco&amp;#34; , &amp;#34;courier new&amp;#34; , monospace ; font-size: 14px ; line-height: 21px&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="727.5" y="960" width="100" height="100" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="Df90VhSjuNAF8wh3Mx0P" name="创建pod流量">
+        <mxGraphModel dx="1653" dy="847" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-0"/>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-1" parent="Y3Xy96zRkQibD91w3hbg-0"/>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-21" value="watch到pod的变化&lt;br&gt;执行调度算法给pod标记上合适的node" style="edgeStyle=none;html=1;entryX=0.005;entryY=0.63;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-8" target="Y3Xy96zRkQibD91w3hbg-20">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v7E6MHngFhA29WeMcwUQ-3" value="绑定信息写入" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-8" target="Y3Xy96zRkQibD91w3hbg-10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-8" value="scheduler&lt;br&gt;生产者: 给pod找出合适的node节点" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="140" y="1034" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-17" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-9" target="Y3Xy96zRkQibD91w3hbg-10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-18" value="通过资源创建处理器, 解码请求, 审计和&lt;br&gt;准入控制, 最后保存到etcd中" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-17">
+                    <mxGeometry x="0.1321" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-9" value="apiServer&lt;br&gt;集群流量统一入口" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="264" y="535" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-10" value="etcd&lt;br&gt;数据存储" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="560" y="535" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-14" value="" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" target="Y3Xy96zRkQibD91w3hbg-9">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="60" y="585" as="sourcePoint"/>
+                        <mxPoint x="125" y="585" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-15" value="发起创建请求" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-14">
+                    <mxGeometry x="-0.2667" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-16" value="kubelet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-14">
+                    <mxGeometry x="0.2571" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-20" value="" style="sketch=0;html=1;dashed=0;whitespace=wrap;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon;prIcon=pod" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="480" y="1060" width="50" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-23" value="" style="group" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="100" y="830" width="180" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-22" value="node" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;verticalAlign=top;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-23">
+                    <mxGeometry width="180" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-7" value="kubelet&lt;br&gt;消费者" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-23">
+                    <mxGeometry x="40" y="40" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-24" value="kubelet&lt;br&gt;消费者" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="600" y="870" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-25" value="" style="edgeStyle=none;html=1;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-7" target="Y3Xy96zRkQibD91w3hbg-24">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-26" value="syncLoop 监听到本节点需要去创建pod" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-25">
+                    <mxGeometry x="-0.1275" y="1" relative="1" as="geometry">
+                        <mxPoint y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-27" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-7" target="Y3Xy96zRkQibD91w3hbg-9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-28" value="建完通知" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-27">
+                    <mxGeometry x="0.0313" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-29" value="kubelet&lt;br&gt;做客户端验证操作&lt;br&gt;快速失败" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-260" y="530" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-30" value="kubelet&lt;br&gt;身份认证" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-140" y="530" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-31" value="apiServer&lt;br&gt;请求认证 x509&lt;br&gt;token" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-30" y="530" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-32" value="apiServer&lt;br&gt;权限认证authorization-mode&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0) ; font-family: monospace ; font-size: 0px&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22apiServer%26lt%3Bbr%26gt%3B%E8%AF%B7%E6%B1%82%E8%AE%A4%E8%AF%81%20x509%26lt%3Bbr%26gt%3Btoken%22%20style%3D%22strokeWidth%3D2%3Bhtml%3D1%3Bshape%3Dmxgraph.flowchart.start_2%3BwhiteSpace%3Dwrap%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22-30%22%20y%3D%22530%22%20width%3D%22100%22%20height%3D%22100%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-30" y="660" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-33" value="apiServer&lt;br&gt;准入控制器&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0) ; font-family: monospace ; font-size: 0px&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22apiServer%26lt%3Bbr%26gt%3B%E8%AF%B7%E6%B1%82%E8%AE%A4%E8%AF%81%20x509%26lt%3Bbr%26gt%3Btoken%22%20style%3D%22strokeWidth%3D2%3Bhtml%3D1%3Bshape%3Dmxgraph.flowchart.start_2%3BwhiteSpace%3Dwrap%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22-30%22%20y%3D%22530%22%20width%3D%22100%22%20height%3D%22100%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphMode&lt;/span&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-150" y="670" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-34" value="controller&lt;br&gt;将系统状态从&quot;&quot;当前状态&quot;修正到&quot;期望状态&quot;的异步脚本&lt;br&gt;&lt;br&gt;监听Deployment记录的修改" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-200" y="850" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-37" value="" style="edgeStyle=none;html=1;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-35" target="Y3Xy96zRkQibD91w3hbg-36">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-38" value="创建" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Y3Xy96zRkQibD91w3hbg-37">
+                    <mxGeometry x="0.0875" y="4" relative="1" as="geometry">
+                        <mxPoint y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-35" value="deployment" style="whiteSpace=wrap;html=1;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-270" y="1230" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v7E6MHngFhA29WeMcwUQ-1" value="" style="edgeStyle=none;html=1;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="Y3Xy96zRkQibD91w3hbg-36" target="v7E6MHngFhA29WeMcwUQ-0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Y3Xy96zRkQibD91w3hbg-36" value="repliacset" style="whiteSpace=wrap;html=1;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="-70" y="1230" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v7E6MHngFhA29WeMcwUQ-2" value="" style="edgeStyle=none;html=1;" edge="1" parent="Y3Xy96zRkQibD91w3hbg-1" source="v7E6MHngFhA29WeMcwUQ-0" target="Y3Xy96zRkQibD91w3hbg-8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v7E6MHngFhA29WeMcwUQ-0" value="pod是pending&amp;nbsp;" style="whiteSpace=wrap;html=1;" vertex="1" parent="Y3Xy96zRkQibD91w3hbg-1">
+                    <mxGeometry x="130" y="1230" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

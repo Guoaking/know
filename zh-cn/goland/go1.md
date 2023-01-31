@@ -29,7 +29,8 @@ GOOS=linux GOARCH=amd64 go tool compile -S hello.go  转成汇编
 * runtime.growslice() append 扩容
 * runtime.slice.slicecopy()
 
-slice append 加不进去, 直接设置能设置进去?
+slice append 加不进去,返回一个new slice
+直接设置能设置进去?
 
 ```go
 type slice struct {
@@ -49,6 +50,25 @@ type slice struct {
     * 装载因子: 是数组中元素的数量和数组大小的比值 越高, 性能越差
   * 拉链法: 数组加链表,红黑树,
     * 装载因子: 元素数量/桶数量 不超过1
+
+```
+// A header for a Go map.
+type hmap struct {
+	// Note: the format of the hmap is also encoded in cmd/compile/internal/reflectdata/reflect.go.
+	// Make sure this stays in sync with the compiler's definition.
+	count     int // # live cells == size of map.  Must be first (used by len() builtin)
+	flags     uint8
+	B         uint8  // log_2 of # of buckets (can hold up to loadFactor * 2^B items)
+	noverflow uint16 // approximate number of overflow buckets; see incrnoverflow for details
+	hash0     uint32 // hash seed
+
+	buckets    unsafe.Pointer // array of 2^B Buckets. may be nil if count==0.
+	oldbuckets unsafe.Pointer // previous bucket array of half the size, non-nil only when growing
+	nevacuate  uintptr        // progress counter for evacuation (buckets less than this have been evacuated)
+
+	extra *mapextra // optional fields
+}
+```
 
 ### 流程
 

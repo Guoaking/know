@@ -62,6 +62,12 @@ git branch --no-merged 查看已经合并的分支
 
 ```
 
+## 回滚
+
+```bash
+https://zhuanlan.zhihu.com/p/56843134
+```
+
 ## 切换分支
 
 ```bash

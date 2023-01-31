@@ -150,6 +150,85 @@ img/es
 一直写translog 没有性能问题?
 
 
+docker 创建es 测试服务
+
+<!-- tabs:start -->
+
+#### master
+```shell
+
+for port in $(seq 1 3); \
+do \
+mkdir -p ~/work/es/docker_es/es/master-${port}/config
+mkdir -p ~/work/es/docker_es/es/master-${port}/data
+chmod -R 777 ~/work/es/docker_es/es/master-${port}
+cat <<EOF >~/work/es/docker_es/es/master-${port}/config/elasticsearch.yml
+cluster.name: my-es
+node.name: es-master-${port}
+node.master: true
+node.data: false
+network.host: 0.0.0.0
+http.host: 0.0.0.0
+http.port: 920${port}
+transport.tcp.port: 930${port}
+discovery.zen.ping_timeout: 10s
+discovery.seed_hosts: ["172.20.12.21:9301","172.20.12.22:9302","172.20.12.23:9303"]
+cluster.initial_master_nodes: ["172.20.12.21"]
+EOF
+
+docker run --name es-master-${port} \
+-p 920${port}:920${port} -p 930${port}:930${port} \
+--network=esnet --ip 172.20.12.2${port} \
+-e ES_JAVA_OPTS="-Xmx300m -Xms300m" \
+-v ~/work/es/docker_es/es/master-${port}/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v ~/work/es/docker_es/es/master-${port}/data:/usr/share/elasticsearch/data \
+-v ~/work/es/docker_es/es/master-${port}/plugins:/usr/share/elasticsearch/plugins \
+-d elasticsearch:7.8.1
+
+done
+```
+
+
+
+#### node
+
+```shell
+for port in $(seq 4 6); \
+do \
+mkdir -p ~/work/es/docker_es/es/node-${port}/config
+mkdir -p ~/work/es/docker_es/es/node-${port}/data
+chmod -R 777 ~/work/es/docker_es/es/node-${port}
+cat <<EOF >~/work/es/docker_es/es/node-${port}/config/elasticsearch.yml
+cluster.name: my-es
+node.name: es-node-${port}
+node.master: false
+node.data: true
+network.host: 0.0.0.0
+http.host: 0.0.0.0
+http.port: 920${port}
+transport.tcp.port: 930${port}
+discovery.zen.ping_timeout: 10s
+discovery.seed_hosts: ["172.20.12.21:9301","172.20.12.22:9302","172.20.12.23:9303"]
+cluster.initial_master_nodes: ["172.20.12.21"]
+EOF
+
+docker run --name es-node-${port} \
+-p 920${port}:920${port} -p 930${port}:930${port} \
+--network=esnet --ip 172.20.12.2${port} \
+-e ES_JAVA_OPTS="-Xms300m -Xmx300m" \
+-v ~/work/es/docker_es/es/node-${port}/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v ~/work/es/docker_es/es/node-${port}/data:/usr/share/elasticsearch/data \
+-v ~/work/es/docker_es/es/node-${port}/plugins:/usr/share/elasticsearch/plugins \
+-d elasticsearch:7.8.1
+
+done
+
+```
+
+<!-- tabs:end -->
+
+
+
 * https://www.zhihu.com/column/Elasticsearch
 * https://www.zhihu.com/column/c_1392559802560634880
 * https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
